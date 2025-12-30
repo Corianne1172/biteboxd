@@ -24,6 +24,13 @@ def create_recipe(
         cook_time=payload.cook_time,
         cuisine=payload.cuisine,
         difficulty=payload.difficulty,
+        is_public=payload.is_public,
+        calories=payload.calories,
+        protein_g=payload.protein_g,
+        carbs_g=payload.carbs_g,
+        fat_g=payload.fat_g,
+        rating=payload.rating,
+        review=payload.review,
     )
     db.add(recipe)
     db.commit()
