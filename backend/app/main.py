@@ -7,7 +7,7 @@ from app.routes.recipes import router as recipes_router
 
 app = FastAPI(title="BiteBoxd API")
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
 app.include_router(recipes_router)
