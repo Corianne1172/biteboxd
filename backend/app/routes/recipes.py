@@ -42,17 +42,31 @@ def create_recipe(
     return recipe
 
 
-@router.get("", response_model=list[RecipeOut])
+@router.get("", response_model=dict)
 def list_my_recipes(
+    limit: int = 20,
+    offset: int = 0,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return (
-        db.query(Recipe)
-        .filter(Recipe.created_by == current_user.id)
-        .order_by(Recipe.id.desc())
+    limit = max(1, min(limit, 50))
+    offset = max(0, offset)
+
+    base = db.query(Recipe).filter(Recipe.created_by == current_user.id)
+
+    total = base.count()
+
+    items = (
+        base.order_by(Recipe.id.desc())
+        .offset(offset)
+        .limit(limit)
         .all()
     )
+
+    return {
+        "meta": {"limit": limit, "offset": offset, "total": total},
+        "items": [RecipeOut.model_validate(r) for r in items],
+    }
 
 
 @router.get("/{recipe_id}", response_model=RecipeOut)
