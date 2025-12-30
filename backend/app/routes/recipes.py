@@ -6,6 +6,10 @@ from app.models.models import Recipe, User
 from app.schemas.recipe import RecipeCreate, RecipeOut, RecipeUpdate
 from app.core.deps import get_current_user
 
+from fastapi import UploadFile, File
+import os
+import uuid
+
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
 
@@ -96,3 +100,33 @@ def delete_recipe(
     db.delete(recipe)
     db.commit()
     return {"deleted": True}
+
+@router.post("/{recipe_id}/photo")
+def upload_recipe_photo(
+    recipe_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+
+    if not recipe or recipe.created_by != current_user.id:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+
+    upload_dir = "uploads"
+    os.makedirs(upload_dir, exist_ok=True)
+
+    ext = file.filename.split(".")[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(upload_dir, filename)
+
+    with open(filepath, "wb") as buffer:
+        buffer.write(file.file.read())
+
+    recipe.photo_url = filepath
+    db.commit()
+
+    return {"photo_url": filepath}
