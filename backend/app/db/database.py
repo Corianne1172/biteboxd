@@ -1,25 +1,17 @@
-import os
+# app/db/database.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-
-# 👇 THIS is the missing piece
-load_dotenv()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if DATABASE_URL is None:
-    raise RuntimeError("DATABASE_URL is not set")
+from app.core.config import settings
 
 engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True
+    settings.DATABASE_URL,
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
-    bind=engine
+    bind=engine,
 )
 
 def get_db():

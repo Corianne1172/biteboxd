@@ -5,8 +5,13 @@ from app.models import models  # noqa
 from app.routes.auth import router as auth_router
 from app.routes.recipes import router as recipes_router
 from app.routes.feed import router as feed_router
+from sqlalchemy import text
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.db.database import get_db
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -41,14 +46,18 @@ app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
-app = FastAPI(title="BiteBoxd API")
-
 # Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
 app.include_router(recipes_router)
 app.include_router(feed_router)
 
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 @app.get("/health")
 def health():
     return {"status": "ok", "env": settings.ENV}
+
+@app.get("/db-check")
+def db_check(db: Session = Depends(get_db)):
+    return {"ok": bool(db.execute(text("SELECT 1")).scalar())}
