@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import PageContainer from "../components/UI/PageContainer";
+import ErrorMessage from "../components/UI/ErrorMessage";
+import { FormField, Input } from "../components/UI/FormField";
 
 export default function Login() {
   const { login } = useAuth();
@@ -21,17 +24,23 @@ export default function Login() {
   };
 
   return (
-    <div style={{ padding: 24, maxWidth: 420 }}>
-      <h2>Login</h2>
-      {err && <p style={{ color: "red" }}>{err}</p>}
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 10 }}>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" type="password" />
-        <button type="submit">Login</button>
-      </form>
-      <p style={{ marginTop: 12 }}>
-        No account? <Link to="/register">Register</Link>
-      </p>
-    </div>
+    <PageContainer>
+      <div style={{ maxWidth: 420 }}>
+        <h2>Login</h2>
+        <ErrorMessage>{err}</ErrorMessage>
+        <form onSubmit={onSubmit} style={{ display: "grid", gap: "var(--spacing-sm)" }}>
+          <FormField>
+            <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+          </FormField>
+          <FormField>
+            <Input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" type="password" />
+          </FormField>
+          <button type="submit">Login</button>
+        </form>
+        <p style={{ marginTop: "var(--spacing-md)" }}>
+          No account? <Link to="/register">Register</Link>
+        </p>
+      </div>
+    </PageContainer>
   );
 }
