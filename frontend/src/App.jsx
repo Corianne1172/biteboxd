@@ -19,7 +19,7 @@ function TopNav() {
   const { isAuthed, logout } = useAuth();
 
   return (
-    <div style={{ padding: 12, borderBottom: "1px solid #eee", display: "flex", gap: 12 }}>
+    <div style={{ padding: "var(--spacing-md)", borderBottom: "var(--border-light)", display: "flex", gap: "var(--spacing-md)" }}>
       <Link to="/">BiteBoxd</Link>
       <Link to="/feed">Feed</Link>
       {isAuthed && <Link to="/recipes">My Recipes</Link>}
@@ -27,7 +27,7 @@ function TopNav() {
         {isAuthed ? (
           <button onClick={logout}>Logout</button>
         ) : (
-          <span style={{ display: "flex", gap: 10 }}>
+          <span style={{ display: "flex", gap: "var(--spacing-sm)" }}>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
           </span>

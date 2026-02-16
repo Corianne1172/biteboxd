@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import api from "../api/client";
 import RecipeForm from "../components/RecipeForm";
+import PageContainer from "../components/UI/PageContainer";
 
 export default function NewRecipe() {
   const nav = useNavigate();
@@ -11,9 +12,9 @@ export default function NewRecipe() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
+    <PageContainer>
       <h2>New Recipe</h2>
       <RecipeForm onSubmit={create} submitLabel="Create" />
-    </div>
+    </PageContainer>
   );
 }

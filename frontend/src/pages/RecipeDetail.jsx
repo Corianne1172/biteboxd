@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api/client";
+import PageContainer from "../components/UI/PageContainer";
+import ErrorMessage from "../components/UI/ErrorMessage";
+import LoadingMessage from "../components/UI/LoadingMessage";
+import Card from "../components/UI/Card";
 
 export default function RecipeDetail() {
   const { id } = useParams();
@@ -43,82 +47,82 @@ export default function RecipeDetail() {
     }
   };
 
-  if (err) return <div style={{ padding: 24 }}><p style={{ color: "red" }}>{err}</p></div>;
-  if (!item) return <div style={{ padding: 24 }}><p>Loading…</p></div>;
+  if (err) return <PageContainer><ErrorMessage>{err}</ErrorMessage></PageContainer>;
+  if (!item) return <PageContainer><LoadingMessage /></PageContainer>;
 
-  // If your backend serves static uploads later, this will show.
-  // For now it may just display the file path.
   const photoPath = item.photo_url;
 
   return (
-    <div style={{ padding: 24, display: "grid", gap: 12 }}>
-      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <h2 style={{ margin: 0 }}>{item.title}</h2>
-        <span style={{ marginLeft: "auto" }}>{item.is_public ? "🌍 Public" : "🔒 Private"}</span>
-      </div>
-
-      <div style={{ display: "flex", gap: 10 }}>
-        <Link to="/recipes">← Back</Link>
-        <Link to={`/recipes/${id}/edit`}>Edit</Link>
-      </div>
-
-      <div style={{ border: "1px solid #eee", padding: 12, borderRadius: 10 }}>
-        <p style={{ margin: 0 }}><b>Author:</b> {item.author ?? "—"}</p>
-        <p style={{ margin: 0 }}><b>Cook time:</b> {item.cook_time ?? "—"} min</p>
-        <p style={{ margin: 0 }}><b>Cuisine:</b> {item.cuisine ?? "—"}</p>
-        <p style={{ margin: 0 }}><b>Difficulty:</b> {item.difficulty ?? "—"}</p>
-      </div>
-
-      {item.description && (
-        <div>
-          <h3>Description</h3>
-          <p>{item.description}</p>
+    <PageContainer>
+      <div style={{ display: "grid", gap: "var(--spacing-md)" }}>
+        <div style={{ display: "flex", gap: "var(--spacing-sm)", alignItems: "center" }}>
+          <h2 style={{ margin: 0 }}>{item.title}</h2>
+          <span style={{ marginLeft: "auto" }}>{item.is_public ? "🌍 Public" : "🔒 Private"}</span>
         </div>
-      )}
 
-      {item.instructions && (
-        <div>
-          <h3>Instructions</h3>
-          <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{item.instructions}</pre>
+        <div style={{ display: "flex", gap: "var(--spacing-sm)" }}>
+          <Link to="/recipes">← Back</Link>
+          <Link to={`/recipes/${id}/edit`}>Edit</Link>
         </div>
-      )}
 
-      <div style={{ border: "1px solid #eee", padding: 12, borderRadius: 10 }}>
-        <h3 style={{ marginTop: 0 }}>Macros</h3>
-        <p style={{ margin: 0 }}>
-          {item.calories ?? "—"} cal | {item.protein_g ?? "—"}g protein |{" "}
-          {item.carbs_g ?? "—"}g carbs | {item.fat_g ?? "—"}g fat
-        </p>
-      </div>
+        <Card>
+          <p style={{ margin: 0 }}><b>Author:</b> {item.author ?? "—"}</p>
+          <p style={{ margin: 0 }}><b>Cook time:</b> {item.cook_time ?? "—"} min</p>
+          <p style={{ margin: 0 }}><b>Cuisine:</b> {item.cuisine ?? "—"}</p>
+          <p style={{ margin: 0 }}><b>Difficulty:</b> {item.difficulty ?? "—"}</p>
+        </Card>
 
-      <div style={{ border: "1px solid #eee", padding: 12, borderRadius: 10 }}>
-        <h3 style={{ marginTop: 0 }}>Rating & Review</h3>
-        <p style={{ margin: 0 }}>⭐ {item.rating ?? "—"}</p>
-        <p style={{ margin: "6px 0 0" }}>{item.review ?? "—"}</p>
-      </div>
-
-      <div style={{ border: "1px solid #eee", padding: 12, borderRadius: 10 }}>
-        <h3 style={{ marginTop: 0 }}>Photo</h3>
-
-        {photoPath ? (
-          <p style={{ marginTop: 0 }}>
-            Saved path: <code>{photoPath}</code>
-          </p>
-        ) : (
-          <p style={{ marginTop: 0 }}>No photo uploaded yet.</p>
+        {item.description && (
+          <div>
+            <h3>Description</h3>
+            <p>{item.description}</p>
+          </div>
         )}
 
-        {uploadErr && <p style={{ color: "red" }}>{uploadErr}</p>}
+        {item.instructions && (
+          <div>
+            <h3>Instructions</h3>
+            <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{item.instructions}</pre>
+          </div>
+        )}
 
-        <input
-          type="file"
-          accept="image/*"
-          disabled={uploading}
-          onChange={(e) => onUpload(e.target.files?.[0])}
-        />
+        <Card>
+          <h3 style={{ marginTop: 0 }}>Macros</h3>
+          <p style={{ margin: 0 }}>
+            {item.calories ?? "—"} cal | {item.protein_g ?? "—"}g protein |{" "}
+            {item.carbs_g ?? "—"}g carbs | {item.fat_g ?? "—"}g fat
+          </p>
+        </Card>
 
-        {uploading && <p>Uploading…</p>}
+        <Card>
+          <h3 style={{ marginTop: 0 }}>Rating & Review</h3>
+          <p style={{ margin: 0 }}>⭐ {item.rating ?? "—"}</p>
+          <p style={{ margin: "var(--spacing-xs) 0 0" }}>{item.review ?? "—"}</p>
+        </Card>
+
+        <Card>
+          <h3 style={{ marginTop: 0 }}>Photo</h3>
+
+          {photoPath ? (
+            <p style={{ marginTop: 0 }}>
+              Saved path: <code>{photoPath}</code>
+            </p>
+          ) : (
+            <p style={{ marginTop: 0 }}>No photo uploaded yet.</p>
+          )}
+
+          <ErrorMessage>{uploadErr}</ErrorMessage>
+
+          <input
+            type="file"
+            accept="image/*"
+            disabled={uploading}
+            onChange={(e) => onUpload(e.target.files?.[0])}
+          />
+
+          {uploading && <LoadingMessage>Uploading…</LoadingMessage>}
+        </Card>
       </div>
-    </div>
+    </PageContainer>
   );
 }
