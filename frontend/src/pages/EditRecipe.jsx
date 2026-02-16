@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/client";
 import RecipeForm from "../components/RecipeForm";
+import PageContainer from "../components/UI/PageContainer";
+import ErrorMessage from "../components/UI/ErrorMessage";
+import LoadingMessage from "../components/UI/LoadingMessage";
 
 export default function EditRecipe() {
   const { id } = useParams();
@@ -25,13 +28,13 @@ export default function EditRecipe() {
     nav(`/recipes/${id}`);
   };
 
-  if (err) return <div style={{ padding: 24 }}><p style={{ color: "red" }}>{err}</p></div>;
-  if (!item) return <div style={{ padding: 24 }}><p>Loading…</p></div>;
+  if (err) return <PageContainer><ErrorMessage>{err}</ErrorMessage></PageContainer>;
+  if (!item) return <PageContainer><LoadingMessage /></PageContainer>;
 
   return (
-    <div style={{ padding: 24 }}>
+    <PageContainer>
       <h2>Edit Recipe</h2>
       <RecipeForm initial={item} onSubmit={save} submitLabel="Save" />
-    </div>
+    </PageContainer>
   );
 }
