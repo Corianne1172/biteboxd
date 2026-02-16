@@ -11,6 +11,39 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* BiteBoxd Color Palette */
+  --color-olive: #8A8635;
+  --color-deep-red: #AA2B1D;
+  --color-orange: #CC561E;
+  --color-cream: #F3CF7A;
+  --color-ink: #14120f;
+  --color-card: #1b1813;
+  --color-line: rgba(243, 207, 122, 0.22);
+  --color-muted: rgba(243, 207, 122, 0.75);
+  
+  /* Semantic Colors */
+  --color-primary: #646cff;
+  --color-primary-hover: #535bf2;
+  --color-error: #AA2B1D;
+  --color-error-bg: rgba(170, 43, 29, 0.22);
+  --color-error-border: rgba(170, 43, 29, 0.45);
+  --color-error-text: #ffd2cc;
+  
+  /* Spacing */
+  --spacing-xs: 6px;
+  --spacing-sm: 10px;
+  --spacing-md: 12px;
+  --spacing-lg: 24px;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  /* Borders */
+  --border-light: 1px solid #eee;
+  --border-dark: 1px solid #ddd;
 }
 
 a {
