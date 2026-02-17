@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AuthShell from "../components/AuthShell";
 import RecipeCollage from "../components/RecipeCollage";
 import PasswordRules from "../components/Auth/PasswordRules";
 import { FormField } from "../components/UI/FormField";
+import FocusInput from "../components/UI/FocusInput";
+import FocusButton from "../components/UI/FocusButton";
 
 export default function Register() {
   const { register } = useAuth();
@@ -14,6 +16,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 420);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 420);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const rules = useMemo(() => {
     return {
@@ -46,10 +55,21 @@ export default function Register() {
     }
   };
 
+  const containerStyles = {
+    ...styles.formContainer,
+    maxWidth: isSmallScreen ? "100%" : 400,
+    padding: isSmallScreen ? "0 8px" : 0,
+  };
+
+  const formStyles = {
+    ...styles.form,
+    gap: isSmallScreen ? "var(--spacing-sm)" : "var(--spacing-md)",
+  };
+
   return (
     <AuthShell
       left={
-        <div style={styles.formContainer}>
+        <div style={containerStyles}>
           {/* Brand + Welcome */}
           <div style={styles.brandRow}>
             <div style={styles.logoDot} />
@@ -70,10 +90,9 @@ export default function Register() {
           {err && <div style={styles.error}>{err}</div>}
 
           {/* Registration Form */}
-          <form onSubmit={onSubmit} style={styles.form}>
+          <form onSubmit={onSubmit} style={formStyles}>
             <FormField label="Username" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="corianne1172"
@@ -83,8 +102,7 @@ export default function Register() {
             </FormField>
 
             <FormField label="Email" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -95,8 +113,7 @@ export default function Register() {
             </FormField>
 
             <FormField label="Password" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 8 characters"
@@ -108,13 +125,14 @@ export default function Register() {
 
             <PasswordRules rules={rules} />
 
-            <button 
+            <FocusButton
               type="submit"
-              style={{ ...styles.button, opacity: passwordOk ? 1 : 0.55 }} 
+              variant="primary"
               disabled={!passwordOk}
+              style={{ opacity: passwordOk ? 1 : 0.55 }}
             >
               Create account
-            </button>
+            </FocusButton>
           </form>
 
           <div style={styles.footer}>
@@ -130,7 +148,6 @@ export default function Register() {
 const styles = {
   formContainer: {
     width: "100%",
-    maxWidth: 400,
   },
   brandRow: {
     display: "flex",
@@ -143,6 +160,7 @@ const styles = {
     borderRadius: 6,
     background: "linear-gradient(135deg, var(--color-olive), var(--color-orange))",
     boxShadow: "0 0 0 3px var(--color-line)",
+    flexShrink: 0,
   },
   brand: { 
     fontSize: 18, 
@@ -177,7 +195,6 @@ const styles = {
   },
   form: { 
     display: "grid", 
-    gap: "var(--spacing-md)", 
     marginTop: 16,
   },
   label: { 
@@ -185,26 +202,6 @@ const styles = {
     gap: "var(--spacing-xs)", 
     fontSize: 13, 
     color: "var(--color-muted)",
-  },
-  input: {
-    padding: "11px 12px",
-    borderRadius: "var(--radius-md)",
-    border: "1px solid var(--color-line)",
-    background: "rgba(20,18,15,0.65)",
-    color: "var(--color-cream)",
-    outline: "none",
-    fontSize: 14,
-  },
-  button: {
-    marginTop: 4,
-    padding: "12px 14px",
-    borderRadius: "var(--radius-md)",
-    border: "none",
-    color: "#1a130a",
-    fontWeight: 800,
-    cursor: "pointer",
-    background: "linear-gradient(135deg, var(--color-cream), var(--color-orange))",
-    transition: "opacity 0.2s",
   },
   footer: { 
     marginTop: 14, 
