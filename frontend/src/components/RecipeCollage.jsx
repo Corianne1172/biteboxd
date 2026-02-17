@@ -1,4 +1,14 @@
+import { useState, useEffect } from "react";
+
 export default function RecipeCollage() {
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 600);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 600);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div style={styles.container}>
       {/* Background elements */}
@@ -8,7 +18,8 @@ export default function RecipeCollage() {
 
       {/* Floating recipe cards */}
       <RecipePreviewCard
-        style={{ top: "12%", left: "8%", transform: "rotate(-5deg)" }}
+        isSmall={isSmallScreen}
+        style={{ top: "12%", left: isSmallScreen ? "5%" : "8%", transform: "rotate(-5deg)" }}
         title="Honey Garlic Salmon"
         time="22 min"
         tag="High Protein"
@@ -19,7 +30,8 @@ export default function RecipeCollage() {
       />
       
       <RecipePreviewCard
-        style={{ top: "35%", right: "10%", transform: "rotate(4deg)" }}
+        isSmall={isSmallScreen}
+        style={{ top: "35%", right: isSmallScreen ? "5%" : "10%", transform: "rotate(4deg)" }}
         title="Spicy Chicken Tacos"
         time="18 min"
         tag="Crowd Pleaser"
@@ -30,7 +42,8 @@ export default function RecipeCollage() {
       />
       
       <RecipePreviewCard
-        style={{ bottom: "15%", left: "15%", transform: "rotate(3deg)" }}
+        isSmall={isSmallScreen}
+        style={{ bottom: "15%", left: isSmallScreen ? "5%" : "15%", transform: "rotate(3deg)" }}
         title="Greek Yogurt Bowl"
         time="5 min"
         tag="Breakfast"
@@ -46,9 +59,9 @@ export default function RecipeCollage() {
   );
 }
 
-function RecipePreviewCard({ style, title, time, tag, rating, calories, protein, tags }) {
+function RecipePreviewCard({ style, title, time, tag, rating, calories, protein, tags, isSmall }) {
   return (
-    <div style={{ ...cardStyles.base, ...style }}>
+    <div style={{ ...cardStyles.base, ...(isSmall && cardStyles.baseSmall), ...style }}>
       <div style={cardStyles.header}>
         <div style={cardStyles.thumb} />
         <div style={{ flex: 1 }}>
@@ -131,6 +144,7 @@ const cardStyles = {
   base: {
     position: "absolute",
     width: 320,
+    maxWidth: "calc(100% - 40px)",
     padding: 16,
     borderRadius: 16,
     background: "rgba(27, 24, 19, 0.85)",
@@ -138,6 +152,12 @@ const cardStyles = {
     boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
     backdropFilter: "blur(10px)",
     pointerEvents: "none",
+  },
+  baseSmall: {
+    width: 280,
+    maxWidth: "calc(100% - 20px)",
+    padding: 12,
+    fontSize: 13,
   },
   header: {
     display: "flex",

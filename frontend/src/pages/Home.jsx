@@ -1,18 +1,39 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthShell from "../components/AuthShell";
 import RecipeCollage from "../components/RecipeCollage";
+import FocusButton from "../components/UI/FocusButton";
 
 export default function Home() {
   const nav = useNavigate();
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 420);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 420);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const containerStyles = {
+    ...styles.heroContainer,
+    maxWidth: isSmallScreen ? "100%" : 440,
+    gap: isSmallScreen ? 24 : 32,
+    padding: isSmallScreen ? "0 8px" : 0,
+  };
+
+  const titleStyles = {
+    ...styles.title,
+    fontSize: isSmallScreen ? 32 : 42,
+  };
 
   return (
     <AuthShell
       left={
-        <div style={styles.heroContainer}>
+        <div style={containerStyles}>
           {/* Brand + Logo */}
           <div style={styles.brandSection}>
             <div style={styles.logoLarge} />
-            <h1 style={styles.title}>BiteBoxd</h1>
+            <h1 style={titleStyles}>BiteBoxd</h1>
             <p style={styles.tagline}>Rate recipes like movies. Track macros like a pro.</p>
           </div>
 
@@ -25,19 +46,20 @@ export default function Home() {
 
           {/* Call-to-Action Buttons */}
           <div style={styles.ctaSection}>
-            <button 
+            <FocusButton
+              variant="primary"
               onClick={() => nav("/register")}
-              style={styles.primaryButton}
+              style={styles.primaryButtonExtra}
             >
               Create account
-            </button>
+            </FocusButton>
             
-            <button 
+            <FocusButton
+              variant="secondary"
               onClick={() => nav("/feed")}
-              style={styles.secondaryButton}
             >
               Explore feed
-            </button>
+            </FocusButton>
           </div>
 
           {/* Secondary Links */}
@@ -59,10 +81,8 @@ export default function Home() {
 const styles = {
   heroContainer: {
     width: "100%",
-    maxWidth: 440,
     display: "flex",
     flexDirection: "column",
-    gap: 32,
   },
   brandSection: {
     textAlign: "center",
@@ -76,7 +96,6 @@ const styles = {
     boxShadow: "0 0 0 4px var(--color-line), 0 8px 24px rgba(0,0,0,0.3)",
   },
   title: {
-    fontSize: 42,
     fontWeight: 900,
     margin: 0,
     marginBottom: 8,
@@ -103,28 +122,8 @@ const styles = {
     flexDirection: "column",
     gap: 12,
   },
-  primaryButton: {
-    padding: "14px 24px",
-    fontSize: 16,
-    fontWeight: 800,
-    borderRadius: "var(--radius-md)",
-    border: "none",
-    background: "linear-gradient(135deg, var(--color-cream), var(--color-orange))",
-    color: "#1a130a",
-    cursor: "pointer",
-    transition: "transform 0.2s, box-shadow 0.2s",
+  primaryButtonExtra: {
     boxShadow: "0 4px 12px rgba(243, 207, 122, 0.3)",
-  },
-  secondaryButton: {
-    padding: "14px 24px",
-    fontSize: 16,
-    fontWeight: 700,
-    borderRadius: "var(--radius-md)",
-    border: "1px solid var(--color-line)",
-    background: "rgba(20,18,15,0.5)",
-    color: "var(--color-cream)",
-    cursor: "pointer",
-    transition: "background 0.2s, border-color 0.2s",
   },
   footerLinks: {
     textAlign: "center",
