@@ -28,17 +28,19 @@ export default function Home() {
             >
               Get Started Free
             </FocusButton>
-            <button onClick={() => {
-              document.getElementById('examples').scrollIntoView({ behavior: 'smooth' });
-            }} style={styles.heroSecondaryButton}>
-              See Examples
-            </button>
+            <FocusButton
+              variant="secondary"
+              onClick={() => nav("/feed")}
+              style={styles.heroSecondaryButton}
+            >
+              Explore Recipes
+            </FocusButton>
           </div>
         </div>
       </section>
 
       {/* Examples Section */}
-      <section id="examples" style={styles.examplesSection}>
+      <section style={styles.examplesSection}>
         <h2 style={styles.sectionTitle}>Track Your Culinary Journey</h2>
         <p style={styles.sectionSubtitle}>
           Every recipe tells a story. Rate them, track macros, and build your perfect cookbook.
@@ -169,75 +171,74 @@ function RecipeCard({ title, rating, time, calories, protein, tags, color }) {
 const styles = {
   pageContainer: {
     width: "100%",
-    background: "linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 50%, #D24545 100%)",
-    scrollBehavior: "smooth",
+    minHeight: "100vh",
+    background: "linear-gradient(180deg, #A94438 0%, #D24545 35%, #E6BAA3 70%, #E4DEBE 100%)",
+    paddingBottom: 80,
   },
   
   // Hero Section
   heroSection: {
-    minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "80px 24px",
-    background: "linear-gradient(135deg, #A94438 0%, #D24545 100%)",
+    padding: "60px 24px 80px",
   },
   heroContent: {
-    maxWidth: 720,
+    maxWidth: 680,
     textAlign: "center",
     color: "white",
   },
   logoLarge: {
-    width: 80,
-    height: 80,
-    margin: "0 auto 24px",
-    borderRadius: 20,
+    width: 70,
+    height: 70,
+    margin: "0 auto 20px",
+    borderRadius: 18,
     background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
     boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
   },
   heroTitle: {
-    fontSize: 64,
+    fontSize: 56,
     fontWeight: 900,
     margin: 0,
-    marginBottom: 16,
+    marginBottom: 12,
     letterSpacing: -1,
   },
   heroTagline: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 600,
-    margin: "0 0 24px 0",
+    margin: "0 0 20px 0",
     opacity: 0.95,
   },
   heroParagraph: {
-    fontSize: 18,
+    fontSize: 17,
     lineHeight: 1.7,
-    margin: "0 0 40px 0",
+    margin: "0 0 32px 0",
     opacity: 0.9,
-    maxWidth: 600,
+    maxWidth: 560,
     marginLeft: "auto",
     marginRight: "auto",
   },
   heroButtons: {
     display: "flex",
-    gap: 16,
+    gap: 12,
     justifyContent: "center",
     flexWrap: "wrap",
   },
   heroPrimaryButton: {
-    fontSize: 18,
-    padding: "16px 32px",
+    fontSize: 17,
+    padding: "14px 28px",
     background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
     color: "#A94438",
     fontWeight: 700,
     border: "none",
   },
   heroSecondaryButton: {
-    fontSize: 18,
-    padding: "16px 32px",
+    fontSize: 17,
+    padding: "14px 28px",
     background: "transparent",
     color: "white",
     fontWeight: 600,
-    border: "2px solid white",
+    border: "2px solid rgba(255, 255, 255, 0.8)",
     borderRadius: "10px",
     cursor: "pointer",
     transition: "all 0.3s",
@@ -245,98 +246,95 @@ const styles = {
   
   // Examples Section
   examplesSection: {
-    minHeight: "100vh",
-    padding: "80px 24px",
-    background: "#E4DEBE",
+    padding: "60px 24px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
   },
   sectionTitle: {
-    fontSize: 42,
+    fontSize: 38,
     fontWeight: 800,
-    color: "#A94438",
-    margin: "0 0 16px 0",
+    color: "white",
+    margin: "0 0 12px 0",
     textAlign: "center",
+    textShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
   },
   sectionSubtitle: {
-    fontSize: 20,
-    color: "#A94438",
-    margin: "0 0 60px 0",
+    fontSize: 18,
+    color: "white",
+    margin: "0 0 48px 0",
     textAlign: "center",
-    opacity: 0.8,
-    maxWidth: 600,
+    opacity: 0.95,
+    maxWidth: 560,
+    textShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
   },
   cardsGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-    gap: 32,
-    maxWidth: 1200,
+    gap: 24,
+    maxWidth: 1100,
     width: "100%",
   },
   
   // CTA Section
   ctaSection: {
-    minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "80px 24px",
-    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+    padding: "60px 24px",
   },
   ctaContent: {
-    maxWidth: 640,
+    maxWidth: 600,
     textAlign: "center",
-    color: "white",
+    color: "#A94438",
   },
   ctaTitle: {
-    fontSize: 48,
+    fontSize: 42,
     fontWeight: 900,
-    margin: "0 0 16px 0",
+    margin: "0 0 12px 0",
   },
   ctaSubtitle: {
-    fontSize: 20,
-    margin: "0 0 40px 0",
+    fontSize: 18,
+    margin: "0 0 32px 0",
     opacity: 0.9,
     lineHeight: 1.6,
   },
   ctaButtons: {
     display: "flex",
-    gap: 16,
+    gap: 12,
     justifyContent: "center",
     flexWrap: "wrap",
-    marginBottom: 24,
+    marginBottom: 20,
   },
   ctaPrimaryButton: {
-    fontSize: 18,
-    padding: "16px 32px",
-    background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
-    color: "#A94438",
+    fontSize: 17,
+    padding: "14px 28px",
+    background: "linear-gradient(135deg, #A94438 0%, #D24545 100%)",
+    color: "white",
     fontWeight: 700,
     border: "none",
   },
   ctaSecondaryButton: {
-    fontSize: 18,
-    padding: "16px 32px",
+    fontSize: 17,
+    padding: "14px 28px",
     background: "transparent",
-    color: "white",
+    color: "#A94438",
     fontWeight: 600,
-    border: "2px solid white",
+    border: "2px solid #A94438",
   },
   ctaFooter: {
-    fontSize: 16,
+    fontSize: 15,
     opacity: 0.9,
     margin: 0,
   },
   ctaLink: {
     background: "none",
     border: "none",
-    color: "#E6BAA3",
+    color: "#A94438",
     fontWeight: 700,
     textDecoration: "underline",
     cursor: "pointer",
-    fontSize: 16,
+    fontSize: 15,
   },
 };
 
