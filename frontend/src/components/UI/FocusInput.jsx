@@ -6,9 +6,9 @@ export default function FocusInput({ style, ...props }) {
   const baseStyle = {
     padding: "11px 12px",
     borderRadius: "var(--radius-md)",
-    border: "1px solid var(--color-line)",
-    background: "rgba(20,18,15,0.65)",
-    color: "var(--color-cream)",
+    border: "1px solid var(--theme-input-border)",
+    background: "var(--theme-input-bg)",
+    color: "var(--theme-text)",
     fontSize: 14,
     width: "100%",
     boxSizing: "border-box",
@@ -17,9 +17,9 @@ export default function FocusInput({ style, ...props }) {
   };
 
   const focusStyle = isFocused ? {
-    outline: "2px solid var(--color-cream)",
+    outline: "2px solid var(--palette-maroon)",
     outlineOffset: "2px",
-    borderColor: "var(--color-cream)",
+    borderColor: "var(--palette-maroon)",
   } : {};
 
   return (

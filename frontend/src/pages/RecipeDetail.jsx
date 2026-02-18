@@ -225,7 +225,7 @@ const styles = {
     textDecoration: "none",
     fontSize: 15,
     fontWeight: 600,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
   },
   loadingSpinner: {
     fontSize: 72,
@@ -233,7 +233,7 @@ const styles = {
   },
   loadingText: {
     fontSize: 18,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     fontWeight: 600,
     margin: 0,
   },
@@ -250,7 +250,7 @@ const styles = {
     fontSize: 36,
     fontWeight: 900,
     margin: "0 0 12px 0",
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     letterSpacing: -0.5,
     lineHeight: 1.2,
   },
@@ -266,7 +266,7 @@ const styles = {
   ratingNumber: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
   },
   badge: {
     fontSize: 13,
@@ -284,10 +284,10 @@ const styles = {
   cardTitle: {
     fontSize: 22,
     fontWeight: 800,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     margin: "0 0 20px 0",
     paddingBottom: 12,
-    borderBottom: "2px solid #E6BAA3",
+    borderBottom: "2px solid var(--palette-peach)",
   },
   infoGrid: {
     display: "grid",
@@ -302,18 +302,18 @@ const styles = {
   infoLabel: {
     fontSize: 13,
     fontWeight: 700,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   infoValue: {
     fontSize: 16,
-    color: "#333",
+    color: "var(--theme-text)",
     fontWeight: 600,
   },
   text: {
     fontSize: 16,
-    color: "#333",
+    color: "var(--theme-text)",
     lineHeight: 1.7,
     margin: 0,
   },
@@ -321,7 +321,7 @@ const styles = {
     whiteSpace: "pre-wrap",
     fontFamily: "inherit",
     fontSize: 15,
-    color: "#333",
+    color: "var(--theme-text)",
     lineHeight: 1.8,
     margin: 0,
   },
@@ -341,16 +341,16 @@ const styles = {
   macroValue: {
     fontSize: 24,
     fontWeight: 800,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
   },
   macroLabel: {
     fontSize: 13,
-    color: "#666",
+    color: "var(--theme-text-secondary)",
     fontWeight: 600,
   },
   review: {
     fontSize: 16,
-    color: "#555",
+    color: "var(--theme-text-secondary)",
     lineHeight: 1.7,
     fontStyle: "italic",
     margin: 0,
@@ -360,16 +360,16 @@ const styles = {
   },
   photoPath: {
     fontSize: 14,
-    color: "#666",
+    color: "var(--theme-text-secondary)",
     fontFamily: "monospace",
-    background: "#F5F5F5",
+    background: "var(--theme-input-bg)",
     padding: "12px 16px",
     borderRadius: 8,
-    border: "1px solid #E0E0E0",
+    border: "1px solid var(--theme-input-border)",
   },
   noPhoto: {
     fontSize: 15,
-    color: "#999",
+    color: "var(--theme-text-secondary)",
     margin: "0 0 16px 0",
   },
   uploadSection: {
@@ -385,7 +385,7 @@ const styles = {
   },
   uploadingText: {
     fontSize: 14,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     fontWeight: 600,
   },
 };
