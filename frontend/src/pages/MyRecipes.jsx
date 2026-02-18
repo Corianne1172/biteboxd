@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/client";
 import PageContainer from "../components/UI/PageContainer";
 import ErrorMessage from "../components/UI/ErrorMessage";
@@ -10,13 +10,20 @@ export default function MyRecipes() {
   const [items, setItems] = useState([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   const load = async () => {
     setErr("");
     setLoading(true);
     try {
       const res = await api.get("/recipes");
-      setItems(res.data ?? []);
+      const recipes = res.data ?? [];
+      setItems(recipes);
+      
+      // Redirect to create recipe if user has no recipes
+      if (recipes.length === 0) {
+        nav("/recipes/new");
+      }
     } catch {
       setErr("Failed to load your recipes. Are you logged in?");
     } finally {
