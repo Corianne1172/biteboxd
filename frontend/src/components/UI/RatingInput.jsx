@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function RatingInput({ value, onChange, max = 5 }) {
+export default function RatingInput({ value, onChange, max = 5, emoji = "🍽️" }) {
   const [hoverValue, setHoverValue] = useState(0);
 
   const handleClick = (rating) => {
@@ -35,7 +35,7 @@ export default function RatingInput({ value, onChange, max = 5 }) {
             }}
             aria-label={`Rate ${rating} out of ${max}`}
           >
-            🍽️
+            {emoji}
           </button>
         );
       })}

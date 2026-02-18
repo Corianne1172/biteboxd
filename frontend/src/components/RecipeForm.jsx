@@ -20,6 +20,29 @@ const empty = {
   review: "",
 };
 
+const cuisineOptions = [
+  "",
+  "Italian",
+  "Mexican",
+  "Chinese",
+  "Japanese",
+  "Indian",
+  "Thai",
+  "French",
+  "Greek",
+  "Mediterranean",
+  "American",
+  "Korean",
+  "Vietnamese",
+  "Spanish",
+  "Middle Eastern",
+  "Caribbean",
+  "African",
+  "Latin American",
+  "Fusion",
+  "Other",
+];
+
 function toNumberOrNull(v) {
   if (v === "" || v === null || v === undefined) return null;
   const n = Number(v);
@@ -86,14 +109,36 @@ export default function RecipeForm({ initial = empty, onSubmit, submitLabel = "S
       </FormField>
 
       <div style={styles.gridThree}>
-        <FormField label="Cook time (min)" style={styles.label}>
-          <Input value={form.cook_time} onChange={(e) => set("cook_time", e.target.value)} style={styles.input} />
+        <FormField label="Cook time (minutes)" style={styles.label}>
+          <Input 
+            value={form.cook_time} 
+            onChange={(e) => set("cook_time", e.target.value)} 
+            style={styles.input}
+            type="number"
+            min="0"
+            placeholder="e.g., 30"
+          />
         </FormField>
         <FormField label="Cuisine" style={styles.label}>
-          <Input value={form.cuisine} onChange={(e) => set("cuisine", e.target.value)} style={styles.input} />
+          <select
+            value={form.cuisine}
+            onChange={(e) => set("cuisine", e.target.value)}
+            style={styles.select}
+          >
+            <option value="">Select cuisine...</option>
+            {cuisineOptions.slice(1).map((cuisine) => (
+              <option key={cuisine} value={cuisine}>
+                {cuisine}
+              </option>
+            ))}
+          </select>
         </FormField>
-        <FormField label="Difficulty" style={styles.label}>
-          <Input value={form.difficulty} onChange={(e) => set("difficulty", e.target.value)} style={styles.input} />
+        <FormField label="Difficulty (1-5)" style={styles.label}>
+          <RatingInput 
+            value={form.difficulty ? Number(form.difficulty) : 0} 
+            onChange={(difficulty) => set("difficulty", difficulty)}
+            emoji="💪"
+          />
         </FormField>
       </div>
 
@@ -110,16 +155,44 @@ export default function RecipeForm({ initial = empty, onSubmit, submitLabel = "S
       <h3 style={styles.sectionTitle}>Nutritional Information</h3>
       <div style={styles.gridFour}>
         <FormField label="Calories" style={styles.label}>
-          <Input value={form.calories} onChange={(e) => set("calories", e.target.value)} style={styles.input} />
+          <Input 
+            value={form.calories} 
+            onChange={(e) => set("calories", e.target.value)} 
+            style={styles.input}
+            type="number"
+            min="0"
+            placeholder="e.g., 450"
+          />
         </FormField>
         <FormField label="Protein (g)" style={styles.label}>
-          <Input value={form.protein_g} onChange={(e) => set("protein_g", e.target.value)} style={styles.input} />
+          <Input 
+            value={form.protein_g} 
+            onChange={(e) => set("protein_g", e.target.value)} 
+            style={styles.input}
+            type="number"
+            min="0"
+            placeholder="e.g., 25"
+          />
         </FormField>
         <FormField label="Carbs (g)" style={styles.label}>
-          <Input value={form.carbs_g} onChange={(e) => set("carbs_g", e.target.value)} style={styles.input} />
+          <Input 
+            value={form.carbs_g} 
+            onChange={(e) => set("carbs_g", e.target.value)} 
+            style={styles.input}
+            type="number"
+            min="0"
+            placeholder="e.g., 40"
+          />
         </FormField>
         <FormField label="Fat (g)" style={styles.label}>
-          <Input value={form.fat_g} onChange={(e) => set("fat_g", e.target.value)} style={styles.input} />
+          <Input 
+            value={form.fat_g} 
+            onChange={(e) => set("fat_g", e.target.value)} 
+            style={styles.input}
+            type="number"
+            min="0"
+            placeholder="e.g., 15"
+          />
         </FormField>
       </div>
 
@@ -173,6 +246,19 @@ const styles = {
     boxSizing: "border-box",
     transition: "all 0.3s ease",
     boxShadow: "0 2px 8px rgba(169, 68, 56, 0.08)",
+  },
+  select: {
+    background: "white",
+    border: "2px solid #E6BAA3",
+    borderRadius: 12,
+    padding: "12px 16px",
+    fontSize: 15,
+    color: "#333333",
+    width: "100%",
+    boxSizing: "border-box",
+    transition: "all 0.3s ease",
+    boxShadow: "0 2px 8px rgba(169, 68, 56, 0.08)",
+    cursor: "pointer",
   },
   gridThree: {
     display: "grid",
