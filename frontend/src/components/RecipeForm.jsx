@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ErrorMessage from "./UI/ErrorMessage";
 import { FormField, Input, TextArea } from "./UI/FormField";
+import RatingInput from "./UI/RatingInput";
 
 const empty = {
   title: "",
@@ -65,75 +66,183 @@ export default function RecipeForm({ initial = empty, onSubmit, submitLabel = "S
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "grid", gap: "var(--spacing-sm)", maxWidth: 720 }}>
+    <form onSubmit={handleSubmit} style={styles.form}>
       <ErrorMessage>{err}</ErrorMessage>
 
-      <FormField label="Title *">
-        <Input value={form.title} onChange={(e) => set("title", e.target.value)} />
+      <FormField label="Recipe Title *" style={styles.label}>
+        <Input value={form.title} onChange={(e) => set("title", e.target.value)} style={styles.input} />
       </FormField>
 
-      <FormField label="Author (optional)">
-        <Input value={form.author} onChange={(e) => set("author", e.target.value)} />
+      <FormField label="Author (optional)" style={styles.label}>
+        <Input value={form.author} onChange={(e) => set("author", e.target.value)} style={styles.input} />
       </FormField>
 
-      <FormField label="Description">
-        <TextArea value={form.description} onChange={(e) => set("description", e.target.value)} rows={3} />
+      <FormField label="Description" style={styles.label}>
+        <TextArea value={form.description} onChange={(e) => set("description", e.target.value)} rows={3} style={styles.input} />
       </FormField>
 
-      <FormField label="Instructions">
-        <TextArea value={form.instructions} onChange={(e) => set("instructions", e.target.value)} rows={6} />
+      <FormField label="Instructions" style={styles.label}>
+        <TextArea value={form.instructions} onChange={(e) => set("instructions", e.target.value)} rows={6} style={styles.input} />
       </FormField>
 
-      <div style={{ display: "grid", gap: "var(--spacing-sm)", gridTemplateColumns: "repeat(3, 1fr)" }}>
-        <FormField label="Cook time (min)">
-          <Input value={form.cook_time} onChange={(e) => set("cook_time", e.target.value)} />
+      <div style={styles.gridThree}>
+        <FormField label="Cook time (min)" style={styles.label}>
+          <Input value={form.cook_time} onChange={(e) => set("cook_time", e.target.value)} style={styles.input} />
         </FormField>
-        <FormField label="Cuisine">
-          <Input value={form.cuisine} onChange={(e) => set("cuisine", e.target.value)} />
+        <FormField label="Cuisine" style={styles.label}>
+          <Input value={form.cuisine} onChange={(e) => set("cuisine", e.target.value)} style={styles.input} />
         </FormField>
-        <FormField label="Difficulty">
-          <Input value={form.difficulty} onChange={(e) => set("difficulty", e.target.value)} />
+        <FormField label="Difficulty" style={styles.label}>
+          <Input value={form.difficulty} onChange={(e) => set("difficulty", e.target.value)} style={styles.input} />
         </FormField>
       </div>
 
-      <label style={{ display: "flex", gap: "var(--spacing-sm)", alignItems: "center" }}>
+      <label style={styles.checkbox}>
         <input
           type="checkbox"
           checked={form.is_public}
           onChange={(e) => set("is_public", e.target.checked)}
+          style={styles.checkboxInput}
         />
         Make public (shows in Feed)
       </label>
 
-      <h3 style={{ margin: "var(--spacing-sm) 0 0" }}>Macros</h3>
-      <div style={{ display: "grid", gap: "var(--spacing-sm)", gridTemplateColumns: "repeat(4, 1fr)" }}>
-        <FormField label="Calories">
-          <Input value={form.calories} onChange={(e) => set("calories", e.target.value)} />
+      <h3 style={styles.sectionTitle}>Nutritional Information</h3>
+      <div style={styles.gridFour}>
+        <FormField label="Calories" style={styles.label}>
+          <Input value={form.calories} onChange={(e) => set("calories", e.target.value)} style={styles.input} />
         </FormField>
-        <FormField label="Protein (g)">
-          <Input value={form.protein_g} onChange={(e) => set("protein_g", e.target.value)} />
+        <FormField label="Protein (g)" style={styles.label}>
+          <Input value={form.protein_g} onChange={(e) => set("protein_g", e.target.value)} style={styles.input} />
         </FormField>
-        <FormField label="Carbs (g)">
-          <Input value={form.carbs_g} onChange={(e) => set("carbs_g", e.target.value)} />
+        <FormField label="Carbs (g)" style={styles.label}>
+          <Input value={form.carbs_g} onChange={(e) => set("carbs_g", e.target.value)} style={styles.input} />
         </FormField>
-        <FormField label="Fat (g)">
-          <Input value={form.fat_g} onChange={(e) => set("fat_g", e.target.value)} />
-        </FormField>
-      </div>
-
-      <h3 style={{ margin: "var(--spacing-sm) 0 0" }}>Rating & Review</h3>
-      <div style={{ display: "grid", gap: "var(--spacing-sm)", gridTemplateColumns: "1fr 3fr" }}>
-        <FormField label="Rating (1–5)">
-          <Input value={form.rating} onChange={(e) => set("rating", e.target.value)} />
-        </FormField>
-        <FormField label="Review">
-          <Input value={form.review} onChange={(e) => set("review", e.target.value)} />
+        <FormField label="Fat (g)" style={styles.label}>
+          <Input value={form.fat_g} onChange={(e) => set("fat_g", e.target.value)} style={styles.input} />
         </FormField>
       </div>
 
-      <button type="submit" style={{ width: 140 }}>
+      <h3 style={styles.sectionTitle}>Your Review</h3>
+      <div style={styles.ratingSection}>
+        <div style={styles.ratingContainer}>
+          <label style={styles.ratingLabel}>Rating</label>
+          <RatingInput 
+            value={form.rating ? Number(form.rating) : 0} 
+            onChange={(rating) => set("rating", rating)} 
+          />
+        </div>
+        <FormField label="Review (optional)" style={styles.label}>
+          <TextArea 
+            value={form.review} 
+            onChange={(e) => set("review", e.target.value)} 
+            rows={3}
+            style={styles.input}
+            placeholder="What did you think of this recipe?"
+          />
+        </FormField>
+      </div>
+
+      <button type="submit" style={styles.submitButton}>
         {submitLabel}
       </button>
     </form>
   );
 }
+
+const styles = {
+  form: {
+    display: "grid",
+    gap: 16,
+  },
+  label: {
+    display: "grid",
+    gap: 6,
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#A94438",
+  },
+  input: {
+    background: "white",
+    border: "2px solid #E6BAA3",
+    borderRadius: 12,
+    padding: "12px 16px",
+    fontSize: 15,
+    color: "#333333",
+    width: "100%",
+    boxSizing: "border-box",
+    transition: "all 0.3s ease",
+    boxShadow: "0 2px 8px rgba(169, 68, 56, 0.08)",
+  },
+  gridThree: {
+    display: "grid",
+    gap: 12,
+    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  },
+  gridFour: {
+    display: "grid",
+    gap: 12,
+    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+  },
+  gridReview: {
+    display: "grid",
+    gap: 12,
+    gridTemplateColumns: "1fr 3fr",
+  },
+  ratingSection: {
+    display: "grid",
+    gap: 16,
+  },
+  ratingContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  ratingLabel: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#A94438",
+  },
+  checkbox: {
+    display: "flex",
+    gap: 12,
+    alignItems: "center",
+    fontSize: 15,
+    color: "#A94438",
+    fontWeight: 500,
+    cursor: "pointer",
+    padding: "14px 18px",
+    background: "white",
+    border: "2px solid #E6BAA3",
+    borderRadius: 12,
+    boxShadow: "0 2px 8px rgba(169, 68, 56, 0.08)",
+    transition: "all 0.3s ease",
+  },
+  checkboxInput: {
+    width: 20,
+    height: 20,
+    cursor: "pointer",
+    accentColor: "#D24545",
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 800,
+    color: "#A94438",
+    margin: "16px 0 0 0",
+    paddingBottom: 8,
+    borderBottom: "2px solid #E6BAA3",
+  },
+  submitButton: {
+    marginTop: 16,
+    padding: "16px 40px",
+    fontSize: 17,
+    fontWeight: 700,
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+    color: "white",
+    border: "none",
+    borderRadius: 12,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    boxShadow: "0 4px 16px rgba(169, 68, 56, 0.4)",
+  },
+};
