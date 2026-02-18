@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ErrorMessage from "./UI/ErrorMessage";
 import { FormField, Input, TextArea } from "./UI/FormField";
+import RatingInput from "./UI/RatingInput";
 
 const empty = {
   title: "",
@@ -123,12 +124,22 @@ export default function RecipeForm({ initial = empty, onSubmit, submitLabel = "S
       </div>
 
       <h3 style={styles.sectionTitle}>Your Review</h3>
-      <div style={styles.gridReview}>
-        <FormField label="Rating (1–5)" style={styles.label}>
-          <Input value={form.rating} onChange={(e) => set("rating", e.target.value)} style={styles.input} />
-        </FormField>
-        <FormField label="Review" style={styles.label}>
-          <Input value={form.review} onChange={(e) => set("review", e.target.value)} style={styles.input} />
+      <div style={styles.ratingSection}>
+        <div style={styles.ratingContainer}>
+          <label style={styles.ratingLabel}>Rating</label>
+          <RatingInput 
+            value={form.rating ? Number(form.rating) : 0} 
+            onChange={(rating) => set("rating", rating)} 
+          />
+        </div>
+        <FormField label="Review (optional)" style={styles.label}>
+          <TextArea 
+            value={form.review} 
+            onChange={(e) => set("review", e.target.value)} 
+            rows={3}
+            style={styles.input}
+            placeholder="What did you think of this recipe?"
+          />
         </FormField>
       </div>
 
@@ -177,6 +188,20 @@ const styles = {
     display: "grid",
     gap: 12,
     gridTemplateColumns: "1fr 3fr",
+  },
+  ratingSection: {
+    display: "grid",
+    gap: 16,
+  },
+  ratingContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  ratingLabel: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#A94438",
   },
   checkbox: {
     display: "flex",
