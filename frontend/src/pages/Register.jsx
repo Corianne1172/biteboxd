@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import AuthShell from "../components/AuthShell";
-import RecipeCollage from "../components/RecipeCollage";
 import PasswordRules from "../components/Auth/PasswordRules";
 import { FormField } from "../components/UI/FormField";
+import FocusInput from "../components/UI/FocusInput";
+import FocusButton from "../components/UI/FocusButton";
 
 export default function Register() {
   const { register } = useAuth();
@@ -14,6 +14,21 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 420);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 420);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Email validation: must contain @ and a dot after @
+  const isValidEmail = (email) => {
+    const atIndex = email.indexOf("@");
+    if (atIndex === -1) return false;
+    const afterAt = email.slice(atIndex + 1);
+    return afterAt.includes(".");
+  };
 
   const rules = useMemo(() => {
     return {
@@ -24,10 +39,23 @@ export default function Register() {
   }, [password]);
 
   const passwordOk = rules.length && rules.letter && rules.number;
+  
+  // Form is valid if all fields are filled, email is valid, and password passes rules
+  const isFormValid = username.trim() && email.trim() && isValidEmail(email) && passwordOk;
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setErr("");
+
+    if (!username.trim() || !email.trim()) {
+      setErr("Please fill in all fields.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setErr("Please enter a valid email address.");
+      return;
+    }
 
     if (!passwordOk) {
       setErr("Password must be at least 8 characters and include a letter + a number.");
@@ -46,20 +74,31 @@ export default function Register() {
     }
   };
 
+  const containerStyles = {
+    ...styles.formCard,
+    maxWidth: isSmallScreen ? "100%" : 460,
+    padding: isSmallScreen ? 32 : 40,
+  };
+
+  const formStyles = {
+    ...styles.form,
+    gap: isSmallScreen ? 12 : 16,
+  };
+
   return (
-    <AuthShell
-      left={
-        <div style={styles.formContainer}>
-          {/* Brand + Welcome */}
+    <div style={styles.pageContainer}>
+      <div style={styles.contentWrapper}>
+        <div style={containerStyles}>
+          {/* Brand + Logo */}
           <div style={styles.brandRow}>
-            <div style={styles.logoDot} />
+            <div style={styles.logo} />
             <div>
               <div style={styles.brand}>BiteBoxd</div>
               <div style={styles.tagline}>Rate recipes like movies. Track macros like a pro.</div>
             </div>
           </div>
 
-          <div style={{ marginTop: 18 }}>
+          <div style={{ marginTop: 24 }}>
             <div style={styles.welcome}>Welcome 👋</div>
             <div style={styles.pitch}>
               Build your cookbook, share your hits, and see what's trending in the feed.
@@ -70,150 +109,169 @@ export default function Register() {
           {err && <div style={styles.error}>{err}</div>}
 
           {/* Registration Form */}
-          <form onSubmit={onSubmit} style={styles.form}>
+          <form onSubmit={onSubmit} style={formStyles}>
             <FormField label="Username" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="corianne1172"
                 autoComplete="username"
                 required
+                style={styles.input}
               />
             </FormField>
 
             <FormField label="Email" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
+                style={styles.input}
               />
             </FormField>
 
             <FormField label="Password" style={styles.label}>
-              <input
-                style={styles.input}
+              <FocusInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 8 characters"
                 type="password"
                 autoComplete="new-password"
                 required
+                style={styles.input}
               />
             </FormField>
 
             <PasswordRules rules={rules} />
 
-            <button 
+            <FocusButton
               type="submit"
-              style={{ ...styles.button, opacity: passwordOk ? 1 : 0.55 }} 
-              disabled={!passwordOk}
+              variant="primary"
+              disabled={!isFormValid}
+              style={{ 
+                ...styles.submitButton,
+                opacity: isFormValid ? 1 : 0.5,
+                cursor: isFormValid ? "pointer" : "not-allowed",
+              }}
             >
               Create account
-            </button>
+            </FocusButton>
           </form>
 
           <div style={styles.footer}>
             Already have an account? <Link to="/login" style={styles.link}>Log in</Link>
           </div>
         </div>
-      }
-      right={<RecipeCollage />}
-    />
+      </div>
+    </div>
   );
 }
 
 const styles = {
-  formContainer: {
+  pageContainer: {
+    width: "100vw",
+    minHeight: "100vh",
+    background: "linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 40%, #D24545 80%, #A94438 100%)",
+    margin: 0,
+    overflowX: "hidden",
+  },
+  contentWrapper: {
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+  },
+  formCard: {
     width: "100%",
-    maxWidth: 400,
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: 20,
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.25)",
+    border: "1px solid rgba(230, 186, 163, 0.3)",
   },
   brandRow: {
     display: "flex",
-    gap: "var(--spacing-md)",
+    gap: 16,
     alignItems: "center",
   },
-  logoDot: {
-    width: 14,
-    height: 14,
-    borderRadius: 6,
-    background: "linear-gradient(135deg, var(--color-olive), var(--color-orange))",
-    boxShadow: "0 0 0 3px var(--color-line)",
+  logo: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+    flexShrink: 0,
   },
   brand: { 
-    fontSize: 18, 
-    fontWeight: 800, 
-    letterSpacing: 0.2,
-    color: "var(--color-cream)",
+    fontSize: 22, 
+    fontWeight: 900, 
+    letterSpacing: -0.5,
+    color: "#A94438",
   },
   tagline: { 
     fontSize: 13, 
-    color: "var(--color-muted)", 
+    color: "#A94438", 
+    opacity: 0.7,
     marginTop: 2,
   },
   welcome: { 
-    fontSize: 22, 
-    fontWeight: 800, 
-    marginBottom: "var(--spacing-xs)",
-    color: "var(--color-cream)",
+    fontSize: 26, 
+    fontWeight: 900, 
+    marginBottom: 8,
+    color: "#A94438",
   },
   pitch: { 
-    color: "var(--color-muted)", 
-    fontSize: 14, 
-    lineHeight: 1.4,
+    color: "#A94438", 
+    opacity: 0.8,
+    fontSize: 15, 
+    lineHeight: 1.5,
   },
   error: {
-    marginTop: 14,
-    padding: "var(--spacing-sm) var(--spacing-md)",
-    borderRadius: "var(--radius-md)",
-    background: "var(--color-error-bg)",
-    border: "1px solid var(--color-error-border)",
-    color: "var(--color-error-text)",
+    marginTop: 20,
+    padding: "12px 16px",
+    borderRadius: 10,
+    background: "rgba(210, 69, 69, 0.1)",
+    border: "1px solid rgba(210, 69, 69, 0.3)",
+    color: "#D24545",
     fontSize: 14,
   },
   form: { 
     display: "grid", 
-    gap: "var(--spacing-md)", 
-    marginTop: 16,
+    marginTop: 24,
   },
   label: { 
     display: "grid", 
-    gap: "var(--spacing-xs)", 
-    fontSize: 13, 
-    color: "var(--color-muted)",
+    gap: 6, 
+    fontSize: 14, 
+    fontWeight: 600,
+    color: "#A94438",
   },
   input: {
-    padding: "11px 12px",
-    borderRadius: "var(--radius-md)",
-    border: "1px solid var(--color-line)",
-    background: "rgba(20,18,15,0.65)",
-    color: "var(--color-cream)",
-    outline: "none",
-    fontSize: 14,
+    background: "#F5F5F5",
+    border: "1px solid #E0E0E0",
+    color: "#333333",
+    fontSize: 15,
   },
-  button: {
-    marginTop: 4,
-    padding: "12px 14px",
-    borderRadius: "var(--radius-md)",
-    border: "none",
-    color: "#1a130a",
-    fontWeight: 800,
-    cursor: "pointer",
-    background: "linear-gradient(135deg, var(--color-cream), var(--color-orange))",
-    transition: "opacity 0.2s",
+  submitButton: {
+    fontSize: 16,
+    fontWeight: 700,
+    padding: "14px 24px",
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+    color: "white",
+    marginTop: 8,
   },
   footer: { 
-    marginTop: 14, 
+    marginTop: 20, 
     fontSize: 14, 
-    color: "var(--color-muted)",
+    color: "#A94438",
+    opacity: 0.8,
+    textAlign: "center",
   },
   link: { 
-    color: "var(--color-cream)", 
-    fontWeight: 800, 
-    textDecoration: "none",
+    color: "#D24545", 
+    fontWeight: 700, 
+    textDecoration: "underline",
   },
 };

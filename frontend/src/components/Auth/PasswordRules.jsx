@@ -1,6 +1,6 @@
 export default function PasswordRules({ rules }) {
   const ruleLine = (ok, text) => (
-    <div style={{ color: ok ? "var(--color-cream)" : "rgba(255, 120, 120, 0.95)" }}>
+    <div style={{ color: ok ? "#28a745" : "#A94438", fontWeight: ok ? 600 : 400 }}>
       {ok ? "✓" : "•"} {text}
     </div>
   );
@@ -8,16 +8,16 @@ export default function PasswordRules({ rules }) {
   return (
     <div
       style={{
-        padding: "var(--spacing-md)",
-        borderRadius: "var(--radius-md)",
-        border: "1px solid var(--color-line)",
-        background: "rgba(20,18,15,0.35)",
+        padding: "12px 16px",
+        borderRadius: "10px",
+        border: "1px solid #E0E0E0",
+        background: "#F9F9F9",
       }}
     >
-      <div style={{ fontSize: 13, fontWeight: 700, marginBottom: "var(--spacing-xs)", color: "var(--color-cream)" }}>
+      <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6, color: "#A94438" }}>
         Password requirements
       </div>
-      <div style={{ fontSize: 13, lineHeight: 1.5 }}>
+      <div style={{ fontSize: 13, lineHeight: 1.6 }}>
         {ruleLine(rules.length, "At least 8 characters")}
         {ruleLine(rules.letter, "Contains a letter (A–Z)")}
         {ruleLine(rules.number, "Contains a number (0–9)")}

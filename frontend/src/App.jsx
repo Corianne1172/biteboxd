@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
 import Home from "./pages/Home";
@@ -17,6 +17,12 @@ function Protected({ children }) {
 
 function TopNav() {
   const { isAuthed, logout } = useAuth();
+  const location = useLocation();
+  
+  // Hide TopNav on full-screen pages (landing, auth)
+  const hideNav = ['/', '/login', '/register'].includes(location.pathname);
+  
+  if (hideNav) return null;
 
   return (
     <div style={{ padding: "var(--spacing-md)", borderBottom: "var(--border-light)", display: "flex", gap: "var(--spacing-md)" }}>
