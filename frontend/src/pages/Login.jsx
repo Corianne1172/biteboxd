@@ -19,9 +19,26 @@ export default function Login() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Email validation: must contain @ and a dot after @
+  const isValidEmail = (email) => {
+    const atIndex = email.indexOf("@");
+    if (atIndex === -1) return false;
+    const afterAt = email.slice(atIndex + 1);
+    return afterAt.includes(".");
+  };
+
+  // Form is valid if email is valid and password is filled
+  const isFormValid = email.trim() && password.trim() && isValidEmail(email);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setErr("");
+    
+    if (!isFormValid) {
+      setErr("Please enter a valid email and password.");
+      return;
+    }
+    
     try {
       await login(email, password);
       nav("/recipes");
@@ -94,7 +111,16 @@ export default function Login() {
               />
             </FormField>
 
-            <FocusButton type="submit" variant="primary" style={styles.submitButton}>
+            <FocusButton 
+              type="submit" 
+              variant="primary" 
+              disabled={!isFormValid}
+              style={{
+                ...styles.submitButton,
+                opacity: isFormValid ? 1 : 0.5,
+                cursor: isFormValid ? "pointer" : "not-allowed",
+              }}
+            >
               Sign In
             </FocusButton>
           </form>

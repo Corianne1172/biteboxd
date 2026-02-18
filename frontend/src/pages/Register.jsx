@@ -22,6 +22,14 @@ export default function Register() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Email validation: must contain @ and a dot after @
+  const isValidEmail = (email) => {
+    const atIndex = email.indexOf("@");
+    if (atIndex === -1) return false;
+    const afterAt = email.slice(atIndex + 1);
+    return afterAt.includes(".");
+  };
+
   const rules = useMemo(() => {
     return {
       length: password.length >= 8,
@@ -31,10 +39,23 @@ export default function Register() {
   }, [password]);
 
   const passwordOk = rules.length && rules.letter && rules.number;
+  
+  // Form is valid if all fields are filled, email is valid, and password passes rules
+  const isFormValid = username.trim() && email.trim() && isValidEmail(email) && passwordOk;
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setErr("");
+
+    if (!username.trim() || !email.trim()) {
+      setErr("Please fill in all fields.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setErr("Please enter a valid email address.");
+      return;
+    }
 
     if (!passwordOk) {
       setErr("Password must be at least 8 characters and include a letter + a number.");
@@ -129,11 +150,11 @@ export default function Register() {
             <FocusButton
               type="submit"
               variant="primary"
-              disabled={!passwordOk}
+              disabled={!isFormValid}
               style={{ 
                 ...styles.submitButton,
-                opacity: passwordOk ? 1 : 0.5,
-                cursor: passwordOk ? "pointer" : "not-allowed",
+                opacity: isFormValid ? 1 : 0.5,
+                cursor: isFormValid ? "pointer" : "not-allowed",
               }}
             >
               Create account
