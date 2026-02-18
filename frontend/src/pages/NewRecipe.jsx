@@ -12,9 +12,11 @@ export default function NewRecipe() {
   };
 
   return (
-    <PageContainer>
-      <h2>New Recipe</h2>
-      <RecipeForm onSubmit={create} submitLabel="Create" />
-    </PageContainer>
+    <div style={{ minHeight: "100vh", background: "#ffffff", color: "#333" }}>
+      <PageContainer>
+        <h2 style={{ color: "#A94438" }}>New Recipe</h2>
+        <RecipeForm onSubmit={create} submitLabel="Create" />
+      </PageContainer>
+    </div>
   );
 }
