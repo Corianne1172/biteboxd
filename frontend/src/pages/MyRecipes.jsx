@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/client";
-import PageContainer from "../components/UI/PageContainer";
+import { PageShell, Card, Button } from "../components/UI";
 import ErrorMessage from "../components/UI/ErrorMessage";
-import LoadingMessage from "../components/UI/LoadingMessage";
 import RecipeCard from "../components/RecipeCard";
 
 export default function MyRecipes() {
@@ -49,81 +48,63 @@ export default function MyRecipes() {
   }, []);
 
   return (
-    <div style={styles.pageContainer}>
-      <div style={styles.contentWrapper}>
-        <div style={styles.content}>
-          <div style={styles.header}>
-            <div style={styles.headerLeft}>
-              <div style={styles.headerIcon}>📖</div>
-              <div>
-                <h1 style={styles.title}>My Recipes</h1>
-                <p style={styles.subtitle}>Your personal cookbook</p>
-              </div>
+    <PageShell maxWidth={1200}>
+      {/* Header Card */}
+      <Card padding={32} style={{ marginBottom: 32 }}>
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <div style={styles.headerIcon}>📖</div>
+            <div>
+              <h1 style={styles.title}>My Recipes</h1>
+              <p style={styles.subtitle}>Your personal cookbook</p>
             </div>
-            <Link to="/recipes/new" style={styles.newButton}>
-              + New Recipe
-            </Link>
           </div>
-
-          {loading && (
-            <div style={styles.loadingCard}>
-              <div style={styles.loadingSpinner}>🍽️</div>
-              <p style={styles.loadingText}>Loading your recipes...</p>
-            </div>
-          )}
-
-          <ErrorMessage>{err}</ErrorMessage>
-
-          {!loading && items.length > 0 && (
-            <div style={styles.recipeGrid}>
-              {items.map((r) => (
-                <RecipeCard key={r.id} recipe={r} showActions onDelete={onDelete} />
-              ))}
-            </div>
-          )}
-
-          {!loading && items.length === 0 && (
-            <div style={styles.emptyState}>
-              <div style={styles.emptyIcon}>🍽️</div>
-              <h3 style={styles.emptyTitle}>No recipes yet</h3>
-              <p style={styles.emptyText}>
-                Click "New Recipe" to add your first recipe!
-              </p>
-            </div>
-          )}
+          <Link to="/recipes/new" style={{ textDecoration: "none" }}>
+            <Button variant="primary">+ New Recipe</Button>
+          </Link>
         </div>
-      </div>
-    </div>
+      </Card>
+
+      {/* Loading State */}
+      {loading && (
+        <Card padding={48} style={{ textAlign: "center" }}>
+          <div style={styles.loadingSpinner}>🍽️</div>
+          <p style={styles.loadingText}>Loading your recipes...</p>
+        </Card>
+      )}
+
+      {/* Error Message */}
+      <ErrorMessage>{err}</ErrorMessage>
+
+      {/* Recipe Grid */}
+      {!loading && items.length > 0 && (
+        <div style={styles.recipeGrid}>
+          {items.map((r) => (
+            <RecipeCard key={r.id} recipe={r} showActions onDelete={onDelete} />
+          ))}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && items.length === 0 && (
+        <Card padding={64} style={{ textAlign: "center" }}>
+          <div style={styles.emptyIcon}>🍽️</div>
+          <h3 style={styles.emptyTitle}>No recipes yet</h3>
+          <p style={styles.emptyText}>
+            Click "New Recipe" to add your first recipe!
+          </p>
+        </Card>
+      )}
+    </PageShell>
   );
 }
 
 const styles = {
-  pageContainer: {
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 50%, #D24545 100%)",
-    width: "100vw",
-    margin: 0,
-    overflowX: "hidden",
-  },
-  contentWrapper: {
-    minHeight: "100vh",
-    padding: "40px 24px",
-  },
-  content: {
-    maxWidth: 1200,
-    margin: "0 auto",
-  },
   header: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     gap: 16,
-    marginBottom: 32,
-    background: "rgba(255, 255, 255, 0.95)",
-    padding: 32,
-    borderRadius: 20,
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-    border: "1px solid rgba(230, 186, 163, 0.3)",
     flexWrap: "wrap",
   },
   headerLeft: {
@@ -148,25 +129,6 @@ const styles = {
     color: "#A94438",
     opacity: 0.7,
   },
-  newButton: {
-    textDecoration: "none",
-    fontSize: 15,
-    fontWeight: 700,
-    color: "white",
-    padding: "14px 28px",
-    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
-    borderRadius: 12,
-    transition: "all 0.2s",
-    boxShadow: "0 4px 16px rgba(169, 68, 56, 0.4)",
-  },
-  loadingCard: {
-    background: "rgba(255, 255, 255, 0.95)",
-    padding: 48,
-    borderRadius: 20,
-    textAlign: "center",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-    border: "1px solid rgba(230, 186, 163, 0.3)",
-  },
   loadingSpinner: {
     fontSize: 64,
     marginBottom: 16,
@@ -180,14 +142,6 @@ const styles = {
   recipeGrid: {
     display: "grid",
     gap: 24,
-  },
-  emptyState: {
-    background: "rgba(255, 255, 255, 0.95)",
-    padding: 64,
-    borderRadius: 20,
-    textAlign: "center",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-    border: "1px solid rgba(230, 186, 163, 0.3)",
   },
   emptyIcon: {
     fontSize: 72,
