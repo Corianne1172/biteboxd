@@ -115,7 +115,9 @@ export default function RecipeDetail() {
                   </div>
                   <div style={styles.infoItem}>
                     <span style={styles.infoLabel}>Difficulty:</span>
-                    <span style={styles.infoValue}>{item.difficulty || "—"}</span>
+                    <span style={styles.infoValue}>
+                      {item.difficulty ? `${"💪".repeat(Number(item.difficulty))} (${item.difficulty}/5)` : "—"}
+                    </span>
                   </div>
                 </div>
               </div>
