@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/client";
 import RecipeForm from "../components/RecipeForm";
+import { PageShell, Card } from "../components/UI";
 import ErrorMessage from "../components/UI/ErrorMessage";
 
 export default function EditRecipe() {
@@ -27,67 +28,42 @@ export default function EditRecipe() {
   };
 
   return (
-    <div style={styles.pageContainer}>
-      <div style={styles.contentWrapper}>
-        <div style={styles.formCard}>
-          {/* Error State */}
-          {err && (
-            <div style={styles.errorSection}>
-              <ErrorMessage>{err}</ErrorMessage>
-            </div>
-          )}
+    <PageShell maxWidth={800} gradient="warm">
+      <Card padding={40}>
+        {/* Error State */}
+        {err && (
+          <div style={styles.errorSection}>
+            <ErrorMessage>{err}</ErrorMessage>
+          </div>
+        )}
 
-          {/* Loading State */}
-          {!err && !item && (
-            <div style={styles.loadingSection}>
-              <div style={styles.loadingSpinner}>🍽️</div>
-              <p style={styles.loadingText}>Loading recipe...</p>
-            </div>
-          )}
+        {/* Loading State */}
+        {!err && !item && (
+          <div style={styles.loadingSection}>
+            <div style={styles.loadingSpinner}>🍽️</div>
+            <p style={styles.loadingText}>Loading recipe...</p>
+          </div>
+        )}
 
-          {/* Edit Form */}
-          {!err && item && (
-            <>
-              <div style={styles.header}>
-                <div style={styles.icon}>✏️</div>
-                <div>
-                  <h2 style={styles.title}>Edit Recipe</h2>
-                  <p style={styles.subtitle}>Update your recipe details</p>
-                </div>
+        {/* Edit Form */}
+        {!err && item && (
+          <>
+            <div style={styles.header}>
+              <div style={styles.icon}>✏️</div>
+              <div>
+                <h2 style={styles.title}>Edit Recipe</h2>
+                <p style={styles.subtitle}>Update your recipe details</p>
               </div>
-              <RecipeForm initial={item} onSubmit={save} submitLabel="Save Changes" />
-            </>
-          )}
-        </div>
-      </div>
-    </div>
+            </div>
+            <RecipeForm initial={item} onSubmit={save} submitLabel="Save Changes" />
+          </>
+        )}
+      </Card>
+    </PageShell>
   );
 }
 
 const styles = {
-  pageContainer: {
-    width: "100vw",
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #A94438 0%, #D24545 35%, #E6BAA3 70%, #E4DEBE 100%)",
-    margin: 0,
-    overflowX: "hidden",
-  },
-  contentWrapper: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    padding: "40px 24px",
-  },
-  formCard: {
-    width: "100%",
-    maxWidth: 800,
-    background: "rgba(255, 255, 255, 0.95)",
-    borderRadius: 20,
-    padding: 40,
-    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.25)",
-    border: "1px solid rgba(230, 186, 163, 0.3)",
-  },
   header: {
     display: "flex",
     gap: 16,
@@ -120,7 +96,6 @@ const styles = {
   loadingSpinner: {
     fontSize: 64,
     marginBottom: 16,
-    animation: "spin 2s linear infinite",
   },
   loadingText: {
     fontSize: 16,
