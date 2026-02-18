@@ -1,78 +1,166 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import RecipeCollage from "../components/RecipeCollage";
 import FocusButton from "../components/UI/FocusButton";
 
 export default function Home() {
   const nav = useNavigate();
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div style={styles.pageContainer}>
-      {/* Background with RecipeCollage */}
-      <div style={styles.backgroundLayer}>
-        <RecipeCollage />
-      </div>
-
-      {/* Main centered signup box */}
-      <div style={styles.contentOverlay}>
-        <div style={{
-          ...styles.heroCard,
-          maxWidth: isSmallScreen ? "90%" : 640,
-          padding: isSmallScreen ? 32 : 48,
-        }}>
-          {/* Brand + Logo */}
-          <div style={styles.brandSection}>
-            <div style={styles.logoLarge} />
-            <h1 style={{
-              ...styles.title,
-              fontSize: isSmallScreen ? 36 : 52,
-            }}>BiteBoxd</h1>
-            <p style={styles.tagline}>Rate recipes like movies. Track macros like a pro.</p>
-          </div>
-
-          {/* Pitch */}
-          <div style={styles.pitchSection}>
-            <p style={styles.pitch}>
-              Log your favorite recipes, rate them, track nutritional macros, and share your culinary discoveries with the world.
-            </p>
-          </div>
-
-          {/* Call-to-Action Buttons */}
-          <div style={styles.ctaSection}>
+      {/* Hero Section */}
+      <section style={styles.heroSection}>
+        <div style={styles.heroContent}>
+          <div style={styles.logoLarge} />
+          <h1 style={styles.heroTitle}>BiteBoxd</h1>
+          <p style={styles.heroTagline}>
+            Rate recipes like movies. Track macros like a pro.
+          </p>
+          <p style={styles.heroParagraph}>
+            Ever tried a recipe that deserved 5 stars? Or one that was a total flop? 
+            BiteBoxd lets you rate, review, and track every recipe you cook. Build your 
+            personal cookbook, share your culinary hits, and discover what's trending in 
+            the food world.
+          </p>
+          <div style={styles.heroButtons}>
             <FocusButton
               variant="primary"
               onClick={() => nav("/register")}
-              style={styles.primaryButton}
+              style={styles.heroPrimaryButton}
             >
-              Create account
+              Get Started Free
             </FocusButton>
-            
-            <FocusButton
-              variant="secondary"
-              onClick={() => nav("/feed")}
-              style={styles.secondaryButton}
-            >
-              Explore feed
-            </FocusButton>
-          </div>
-
-          {/* Secondary Links */}
-          <div style={styles.footerLinks}>
-            <button 
-              onClick={() => nav("/login")}
-              style={styles.textLink}
-            >
-              Already have an account? <span style={styles.linkUnderline}>Sign in</span>
+            <button onClick={() => {
+              document.getElementById('examples').scrollIntoView({ behavior: 'smooth' });
+            }} style={styles.heroSecondaryButton}>
+              See Examples
             </button>
           </div>
         </div>
+      </section>
+
+      {/* Examples Section */}
+      <section id="examples" style={styles.examplesSection}>
+        <h2 style={styles.sectionTitle}>Track Your Culinary Journey</h2>
+        <p style={styles.sectionSubtitle}>
+          Every recipe tells a story. Rate them, track macros, and build your perfect cookbook.
+        </p>
+        
+        <div style={styles.cardsGrid}>
+          <RecipeCard
+            title="Honey Garlic Salmon"
+            rating="4.8★"
+            time="22 min"
+            calories="485 kcal"
+            protein="42g protein"
+            tags={["Seafood", "High Protein", "Quick"]}
+            color="primary"
+          />
+          <RecipeCard
+            title="Spicy Chicken Tacos"
+            rating="4.6★"
+            time="18 min"
+            calories="520 kcal"
+            protein="38g protein"
+            tags={["Mexican", "Spicy", "Dinner"]}
+            color="secondary"
+          />
+          <RecipeCard
+            title="Greek Yogurt Bowl"
+            rating="4.9★"
+            time="5 min"
+            calories="320 kcal"
+            protein="28g protein"
+            tags={["Breakfast", "Healthy", "Quick"]}
+            color="accent"
+          />
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section style={styles.ctaSection}>
+        <div style={styles.ctaContent}>
+          <h2 style={styles.ctaTitle}>Ready to start cooking smarter?</h2>
+          <p style={styles.ctaSubtitle}>
+            Join thousands of home cooks tracking their recipes and hitting their macro goals.
+          </p>
+          <div style={styles.ctaButtons}>
+            <FocusButton
+              variant="primary"
+              onClick={() => nav("/register")}
+              style={styles.ctaPrimaryButton}
+            >
+              Create Free Account
+            </FocusButton>
+            <FocusButton
+              variant="secondary"
+              onClick={() => nav("/feed")}
+              style={styles.ctaSecondaryButton}
+            >
+              Browse Recipes
+            </FocusButton>
+          </div>
+          <p style={styles.ctaFooter}>
+            Already have an account?{" "}
+            <button onClick={() => nav("/login")} style={styles.ctaLink}>
+              Sign in
+            </button>
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function RecipeCard({ title, rating, time, calories, protein, tags, color }) {
+  const colorSchemes = {
+    primary: {
+      bg: "linear-gradient(135deg, #A94438 0%, #D24545 100%)",
+      accent: "#E6BAA3",
+    },
+    secondary: {
+      bg: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+      accent: "#E4DEBE",
+    },
+    accent: {
+      bg: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
+      text: "#A94438",
+      accent: "#D24545",
+    },
+  };
+
+  const scheme = colorSchemes[color];
+  const isLight = color === "accent";
+
+  return (
+    <div style={{
+      ...cardStyles.base,
+      background: scheme.bg,
+      color: isLight ? scheme.text : "white",
+    }}>
+      <div style={cardStyles.header}>
+        <div style={{
+          ...cardStyles.thumb,
+          background: scheme.accent,
+        }} />
+        <div style={cardStyles.info}>
+          <h3 style={cardStyles.title}>{title}</h3>
+          <p style={cardStyles.time}>{time}</p>
+        </div>
+        <div style={cardStyles.rating}>{rating}</div>
+      </div>
+      
+      <div style={cardStyles.tags}>
+        {tags.map((tag) => (
+          <span key={tag} style={{
+            ...cardStyles.tag,
+            background: isLight ? "rgba(169, 68, 56, 0.1)" : "rgba(255, 255, 255, 0.2)",
+          }}>
+            {tag}
+          </span>
+        ))}
+      </div>
+      
+      <div style={cardStyles.macros}>
+        {calories} • {protein}
       </div>
     </div>
   );
@@ -80,104 +168,233 @@ export default function Home() {
 
 const styles = {
   pageContainer: {
-    position: "relative",
-    minHeight: "100vh",
     width: "100%",
-    overflow: "hidden",
-    background: "linear-gradient(135deg, #1a1814 0%, #2d2520 100%)",
+    background: "linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 50%, #D24545 100%)",
+    scrollBehavior: "smooth",
   },
-  backgroundLayer: {
-    position: "fixed",
-    inset: 0,
-    zIndex: 0,
-  },
-  contentOverlay: {
-    position: "relative",
-    zIndex: 1,
+  
+  // Hero Section
+  heroSection: {
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "32px",
+    padding: "80px 24px",
+    background: "linear-gradient(135deg, #A94438 0%, #D24545 100%)",
   },
-  heroCard: {
-    width: "100%",
-    background: "rgba(255, 255, 255, 0.98)",
-    borderRadius: 24,
-    boxShadow: "0 25px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)",
-    display: "flex",
-    flexDirection: "column",
-    gap: 28,
-  },
-  brandSection: {
+  heroContent: {
+    maxWidth: 720,
     textAlign: "center",
-  },
-  logoLarge: {
-    width: 72,
-    height: 72,
-    margin: "0 auto 20px",
-    borderRadius: 18,
-    background: "linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)",
-    boxShadow: "0 8px 32px rgba(255, 107, 53, 0.4)",
-  },
-  title: {
-    fontWeight: 900,
-    margin: 0,
-    marginBottom: 12,
-    color: "#1a1814",
-    letterSpacing: -1,
-  },
-  tagline: {
-    fontSize: 18,
-    color: "#666",
-    margin: 0,
-    fontWeight: 500,
-  },
-  pitchSection: {
-    textAlign: "center",
-  },
-  pitch: {
-    fontSize: 16,
-    lineHeight: 1.7,
-    color: "#555",
-    margin: 0,
-  },
-  ctaSection: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 14,
-  },
-  primaryButton: {
-    fontSize: 18,
-    padding: "16px 32px",
-    background: "linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)",
-    boxShadow: "0 6px 24px rgba(255, 107, 53, 0.4)",
-    border: "none",
     color: "white",
   },
-  secondaryButton: {
+  logoLarge: {
+    width: 80,
+    height: 80,
+    margin: "0 auto 24px",
+    borderRadius: 20,
+    background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+  },
+  heroTitle: {
+    fontSize: 64,
+    fontWeight: 900,
+    margin: 0,
+    marginBottom: 16,
+    letterSpacing: -1,
+  },
+  heroTagline: {
+    fontSize: 24,
+    fontWeight: 600,
+    margin: "0 0 24px 0",
+    opacity: 0.95,
+  },
+  heroParagraph: {
+    fontSize: 18,
+    lineHeight: 1.7,
+    margin: "0 0 40px 0",
+    opacity: 0.9,
+    maxWidth: 600,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  heroButtons: {
+    display: "flex",
+    gap: 16,
+    justifyContent: "center",
+    flexWrap: "wrap",
+  },
+  heroPrimaryButton: {
     fontSize: 18,
     padding: "16px 32px",
-    background: "white",
-    border: "2px solid #ddd",
-    color: "#333",
+    background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
+    color: "#A94438",
+    fontWeight: 700,
+    border: "none",
   },
-  footerLinks: {
+  heroSecondaryButton: {
+    fontSize: 18,
+    padding: "16px 32px",
+    background: "transparent",
+    color: "white",
+    fontWeight: 600,
+    border: "2px solid white",
+    borderRadius: "10px",
+    cursor: "pointer",
+    transition: "all 0.3s",
+  },
+  
+  // Examples Section
+  examplesSection: {
+    minHeight: "100vh",
+    padding: "80px 24px",
+    background: "#E4DEBE",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sectionTitle: {
+    fontSize: 42,
+    fontWeight: 800,
+    color: "#A94438",
+    margin: "0 0 16px 0",
     textAlign: "center",
-    marginTop: 8,
   },
-  textLink: {
+  sectionSubtitle: {
+    fontSize: 20,
+    color: "#A94438",
+    margin: "0 0 60px 0",
+    textAlign: "center",
+    opacity: 0.8,
+    maxWidth: 600,
+  },
+  cardsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: 32,
+    maxWidth: 1200,
+    width: "100%",
+  },
+  
+  // CTA Section
+  ctaSection: {
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "80px 24px",
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+  },
+  ctaContent: {
+    maxWidth: 640,
+    textAlign: "center",
+    color: "white",
+  },
+  ctaTitle: {
+    fontSize: 48,
+    fontWeight: 900,
+    margin: "0 0 16px 0",
+  },
+  ctaSubtitle: {
+    fontSize: 20,
+    margin: "0 0 40px 0",
+    opacity: 0.9,
+    lineHeight: 1.6,
+  },
+  ctaButtons: {
+    display: "flex",
+    gap: 16,
+    justifyContent: "center",
+    flexWrap: "wrap",
+    marginBottom: 24,
+  },
+  ctaPrimaryButton: {
+    fontSize: 18,
+    padding: "16px 32px",
+    background: "linear-gradient(135deg, #E6BAA3 0%, #E4DEBE 100%)",
+    color: "#A94438",
+    fontWeight: 700,
+    border: "none",
+  },
+  ctaSecondaryButton: {
+    fontSize: 18,
+    padding: "16px 32px",
+    background: "transparent",
+    color: "white",
+    fontWeight: 600,
+    border: "2px solid white",
+  },
+  ctaFooter: {
+    fontSize: 16,
+    opacity: 0.9,
+    margin: 0,
+  },
+  ctaLink: {
     background: "none",
     border: "none",
-    color: "#666",
-    fontSize: 15,
-    cursor: "pointer",
-    padding: 0,
-  },
-  linkUnderline: {
-    color: "#FF6B35",
+    color: "#E6BAA3",
     fontWeight: 700,
     textDecoration: "underline",
-    textUnderlineOffset: 2,
+    cursor: "pointer",
+    fontSize: 16,
+  },
+};
+
+const cardStyles = {
+  base: {
+    padding: 24,
+    borderRadius: 20,
+    boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
+    transition: "transform 0.3s, box-shadow 0.3s",
+    cursor: "pointer",
+  },
+  header: {
+    display: "flex",
+    gap: 16,
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  thumb: {
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    flexShrink: 0,
+  },
+  info: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 700,
+    margin: "0 0 4px 0",
+  },
+  time: {
+    fontSize: 14,
+    margin: 0,
+    opacity: 0.9,
+  },
+  rating: {
+    fontSize: 18,
+    fontWeight: 700,
+    padding: "8px 12px",
+    borderRadius: 12,
+    background: "rgba(255, 255, 255, 0.2)",
+  },
+  tags: {
+    display: "flex",
+    gap: 8,
+    flexWrap: "wrap",
+    marginBottom: 16,
+  },
+  tag: {
+    fontSize: 13,
+    padding: "6px 12px",
+    borderRadius: 16,
+    fontWeight: 600,
+  },
+  macros: {
+    fontSize: 16,
+    fontWeight: 600,
+    opacity: 0.95,
   },
 };
