@@ -17,12 +17,15 @@ export default function MyRecipes() {
     setLoading(true);
     try {
       const res = await api.get("/recipes");
-      const recipes = res.data ?? [];
+      const data = res.data;
+      const recipes = data.items ?? data ?? [];
+      const total = data.meta?.total ?? recipes.length;
+      
       setItems(recipes);
       
-      // Redirect to create recipe if user has no recipes
-      if (!loading && recipes.length === 0) {
-        setTimeout(() => nav("/recipes/new"), 100);
+      // Only redirect after loading completes and if user has no recipes
+      if (total === 0) {
+        nav("/recipes/new");
       }
     } catch {
       setErr("Failed to load your recipes. Are you logged in?");
