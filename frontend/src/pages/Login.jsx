@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { FormField } from "../components/UI/FormField";
 import FocusInput from "../components/UI/FocusInput";
 import FocusButton from "../components/UI/FocusButton";
+import api from "../api/client";
 
 export default function Login() {
   const { login } = useAuth();
@@ -41,7 +42,18 @@ export default function Login() {
     
     try {
       await login(email, password);
-      nav("/recipes");
+      
+      // Check if user has recipes before redirecting
+      try {
+        const res = await api.get("/recipes");
+        const data = res.data;
+        const total = data.meta?.total ?? (data.items ?? data ?? []).length;
+        
+        nav(total === 0 ? "/recipes/new" : "/recipes");
+      } catch {
+        // If recipe check fails, default to /recipes
+        nav("/recipes");
+      }
     } catch (e) {
       const msg =
         e?.response?.data?.error?.message ||
