@@ -55,6 +55,38 @@
   /* Borders */
   --border-light: 1px solid #eee;
   --border-dark: 1px solid #ddd;
+  
+  /* BiteBoxd Theme Colors - Light Mode (default) */
+  --theme-bg-gradient: linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 50%, #D24545 100%);
+  --theme-bg-gradient-warm: linear-gradient(180deg, #A94438 0%, #D24545 35%, #E6BAA3 70%, #E4DEBE 100%);
+  --theme-bg-gradient-cool: linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 40%, #D24545 80%, #A94438 100%);
+  --theme-card-bg: rgba(255, 255, 255, 0.95);
+  --theme-text: #333333;
+  --theme-text-secondary: #666666;
+  --theme-border: rgba(230, 186, 163, 0.3);
+  --theme-input-bg: #F5F5F5;
+  --theme-input-border: #E0E0E0;
+  
+  /* Palette colors (theme-independent) */
+  --palette-maroon: #A94438;
+  --palette-red: #D24545;
+  --palette-peach: #E6BAA3;
+  --palette-beige: #E4DEBE;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* BiteBoxd Theme Colors - Dark Mode */
+    --theme-bg-gradient: linear-gradient(180deg, #1a1410 0%, #2a1a16 50%, #3a1f1a 100%);
+    --theme-bg-gradient-warm: linear-gradient(180deg, #2a1410 0%, #3a1f1a 35%, #4a2620 70%, #3d2520 100%);
+    --theme-bg-gradient-cool: linear-gradient(180deg, #1a1410 0%, #2a1f1a 40%, #3a1f1a 80%, #2a1410 100%);
+    --theme-card-bg: rgba(27, 24, 19, 0.95);
+    --theme-text: #f0f0f0;
+    --theme-text-secondary: #cccccc;
+    --theme-border: rgba(243, 207, 122, 0.22);
+    --theme-input-bg: #2d2520;
+    --theme-input-border: rgba(230, 186, 163, 0.3);
+  }
 }
 
 a {

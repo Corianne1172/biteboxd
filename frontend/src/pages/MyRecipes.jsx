@@ -120,13 +120,13 @@ const styles = {
     fontSize: 32,
     fontWeight: 900,
     margin: 0,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 16,
     margin: "4px 0 0 0",
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     opacity: 0.7,
   },
   loadingSpinner: {
@@ -135,7 +135,7 @@ const styles = {
   },
   loadingText: {
     fontSize: 16,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     fontWeight: 600,
     margin: 0,
   },
@@ -151,12 +151,12 @@ const styles = {
   emptyTitle: {
     fontSize: 24,
     fontWeight: 800,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     margin: "0 0 8px 0",
   },
   emptyText: {
     fontSize: 16,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     opacity: 0.7,
     margin: 0,
   },

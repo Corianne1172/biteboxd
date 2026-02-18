@@ -42,12 +42,12 @@ const styles = {
     fontSize: 28,
     fontWeight: 900,
     margin: 0,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
   },
   subtitle: {
     fontSize: 15,
     margin: "4px 0 0 0",
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     opacity: 0.7,
   },
 };

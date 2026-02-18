@@ -128,13 +128,13 @@ const styles = {
     fontSize: 32,
     fontWeight: 900,
     margin: 0,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 16,
     margin: "4px 0 0 0",
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     opacity: 0.7,
   },
   filterHeader: {
@@ -149,7 +149,7 @@ const styles = {
   filterTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
   },
   filterGrid: {
     display: "grid",
@@ -157,12 +157,12 @@ const styles = {
     gap: 12,
   },
   input: {
-    background: "white",
-    border: "2px solid #E6BAA3",
+    background: "var(--theme-card-bg)",
+    border: "2px solid var(--palette-peach)",
     borderRadius: 12,
     padding: "12px 16px",
     fontSize: 15,
-    color: "#333333",
+    color: "var(--theme-text)",
     width: "100%",
     boxSizing: "border-box",
     transition: "all 0.3s ease",
@@ -174,7 +174,7 @@ const styles = {
   },
   loadingText: {
     fontSize: 16,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     fontWeight: 600,
     margin: 0,
   },
@@ -190,12 +190,12 @@ const styles = {
   emptyTitle: {
     fontSize: 24,
     fontWeight: 800,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     margin: "0 0 8px 0",
   },
   emptyText: {
     fontSize: 16,
-    color: "#A94438",
+    color: "var(--palette-maroon)",
     opacity: 0.7,
     margin: 0,
   },
