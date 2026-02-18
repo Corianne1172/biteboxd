@@ -5,18 +5,13 @@ import FocusButton from "../components/UI/FocusButton";
 
 export default function Home() {
   const nav = useNavigate();
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 420);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 420);
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const titleStyles = {
-    ...styles.title,
-    fontSize: isSmallScreen ? 32 : 42,
-  };
 
   return (
     <div style={styles.pageContainer}>
@@ -25,18 +20,20 @@ export default function Home() {
         <RecipeCollage />
       </div>
 
-      {/* Foreground content overlay */}
+      {/* Main centered signup box */}
       <div style={styles.contentOverlay}>
         <div style={{
-          ...styles.heroContainer,
-          maxWidth: isSmallScreen ? "100%" : 440,
-          gap: isSmallScreen ? 24 : 32,
-          padding: isSmallScreen ? "0 16px" : 0,
+          ...styles.heroCard,
+          maxWidth: isSmallScreen ? "90%" : 640,
+          padding: isSmallScreen ? 32 : 48,
         }}>
           {/* Brand + Logo */}
           <div style={styles.brandSection}>
             <div style={styles.logoLarge} />
-            <h1 style={titleStyles}>BiteBoxd</h1>
+            <h1 style={{
+              ...styles.title,
+              fontSize: isSmallScreen ? 36 : 52,
+            }}>BiteBoxd</h1>
             <p style={styles.tagline}>Rate recipes like movies. Track macros like a pro.</p>
           </div>
 
@@ -52,7 +49,7 @@ export default function Home() {
             <FocusButton
               variant="primary"
               onClick={() => nav("/register")}
-              style={styles.primaryButtonExtra}
+              style={styles.primaryButton}
             >
               Create account
             </FocusButton>
@@ -60,6 +57,7 @@ export default function Home() {
             <FocusButton
               variant="secondary"
               onClick={() => nav("/feed")}
+              style={styles.secondaryButton}
             >
               Explore feed
             </FocusButton>
@@ -86,6 +84,7 @@ const styles = {
     minHeight: "100vh",
     width: "100%",
     overflow: "hidden",
+    background: "linear-gradient(135deg, #1a1814 0%, #2d2520 100%)",
   },
   backgroundLayer: {
     position: "fixed",
@@ -99,40 +98,38 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "var(--spacing-lg)",
+    padding: "32px",
   },
-  heroContainer: {
+  heroCard: {
     width: "100%",
+    background: "rgba(255, 255, 255, 0.98)",
+    borderRadius: 24,
+    boxShadow: "0 25px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)",
     display: "flex",
     flexDirection: "column",
-    background: "rgba(27, 24, 19, 0.92)",
-    border: "1px solid var(--color-line)",
-    borderRadius: "var(--radius-lg)",
-    padding: 32,
-    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-    backdropFilter: "blur(12px)",
+    gap: 28,
   },
   brandSection: {
     textAlign: "center",
   },
   logoLarge: {
-    width: 56,
-    height: 56,
-    margin: "0 auto 16px",
-    borderRadius: 14,
-    background: "linear-gradient(135deg, var(--color-olive), var(--color-orange))",
-    boxShadow: "0 0 0 4px var(--color-line), 0 8px 24px rgba(0,0,0,0.3)",
+    width: 72,
+    height: 72,
+    margin: "0 auto 20px",
+    borderRadius: 18,
+    background: "linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)",
+    boxShadow: "0 8px 32px rgba(255, 107, 53, 0.4)",
   },
   title: {
     fontWeight: 900,
     margin: 0,
-    marginBottom: 8,
-    color: "var(--color-cream)",
-    letterSpacing: -0.5,
+    marginBottom: 12,
+    color: "#1a1814",
+    letterSpacing: -1,
   },
   tagline: {
-    fontSize: 16,
-    color: "var(--color-muted)",
+    fontSize: 18,
+    color: "#666",
     margin: 0,
     fontWeight: 500,
   },
@@ -140,18 +137,30 @@ const styles = {
     textAlign: "center",
   },
   pitch: {
-    fontSize: 15,
-    lineHeight: 1.6,
-    color: "var(--color-muted)",
+    fontSize: 16,
+    lineHeight: 1.7,
+    color: "#555",
     margin: 0,
   },
   ctaSection: {
     display: "flex",
     flexDirection: "column",
-    gap: 12,
+    gap: 14,
   },
-  primaryButtonExtra: {
-    boxShadow: "0 4px 12px rgba(243, 207, 122, 0.3)",
+  primaryButton: {
+    fontSize: 18,
+    padding: "16px 32px",
+    background: "linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)",
+    boxShadow: "0 6px 24px rgba(255, 107, 53, 0.4)",
+    border: "none",
+    color: "white",
+  },
+  secondaryButton: {
+    fontSize: 18,
+    padding: "16px 32px",
+    background: "white",
+    border: "2px solid #ddd",
+    color: "#333",
   },
   footerLinks: {
     textAlign: "center",
@@ -160,13 +169,13 @@ const styles = {
   textLink: {
     background: "none",
     border: "none",
-    color: "var(--color-muted)",
-    fontSize: 14,
+    color: "#666",
+    fontSize: 15,
     cursor: "pointer",
     padding: 0,
   },
   linkUnderline: {
-    color: "var(--color-cream)",
+    color: "#FF6B35",
     fontWeight: 700,
     textDecoration: "underline",
     textUnderlineOffset: 2,
