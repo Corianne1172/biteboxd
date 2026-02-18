@@ -7,7 +7,7 @@ import FocusInput from "../components/UI/FocusInput";
 import FocusButton from "../components/UI/FocusButton";
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const nav = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -63,8 +63,14 @@ export default function Register() {
     }
 
     try {
+      // Register the user
       await register(username, email, password);
-      nav("/login");
+      
+      // Auto-login after successful registration
+      await login(email, password);
+      
+      // Redirect to create first recipe
+      nav("/recipes/new");
     } catch (e) {
       const msg =
         e?.response?.data?.error?.message ||

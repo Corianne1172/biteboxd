@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import api from "../api/client";
 import RecipeForm from "../components/RecipeForm";
+import { PageShell, Card } from "../components/UI";
 
 export default function NewRecipe() {
   const nav = useNavigate();
@@ -11,47 +12,22 @@ export default function NewRecipe() {
   };
 
   return (
-    <div style={styles.pageContainer}>
-      <div style={styles.contentWrapper}>
-        <div style={styles.formCard}>
-          <div style={styles.header}>
-            <div style={styles.icon}>📝</div>
-            <div>
-              <h2 style={styles.title}>Create New Recipe</h2>
-              <p style={styles.subtitle}>Share your culinary creation with the world</p>
-            </div>
+    <PageShell maxWidth={800} gradient="warm">
+      <Card padding={40}>
+        <div style={styles.header}>
+          <div style={styles.icon}>📝</div>
+          <div>
+            <h2 style={styles.title}>Create New Recipe</h2>
+            <p style={styles.subtitle}>Share your culinary creation with the world</p>
           </div>
-          <RecipeForm onSubmit={create} submitLabel="Create Recipe" />
         </div>
-      </div>
-    </div>
+        <RecipeForm onSubmit={create} submitLabel="Create Recipe" />
+      </Card>
+    </PageShell>
   );
 }
 
 const styles = {
-  pageContainer: {
-    width: "100vw",
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #A94438 0%, #D24545 35%, #E6BAA3 70%, #E4DEBE 100%)",
-    margin: 0,
-    overflowX: "hidden",
-  },
-  contentWrapper: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    padding: "40px 24px",
-  },
-  formCard: {
-    width: "100%",
-    maxWidth: 800,
-    background: "rgba(255, 255, 255, 0.95)",
-    borderRadius: 20,
-    padding: 40,
-    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.25)",
-    border: "1px solid rgba(230, 186, 163, 0.3)",
-  },
   header: {
     display: "flex",
     gap: 16,
