@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import AuthShell from "../components/AuthShell";
 import RecipeCollage from "../components/RecipeCollage";
 import { FormField } from "../components/UI/FormField";
 import FocusInput from "../components/UI/FocusInput";
@@ -37,9 +36,9 @@ export default function Login() {
   };
 
   const containerStyles = {
-    ...styles.formContainer,
+    ...styles.formCard,
     maxWidth: isSmallScreen ? "100%" : 400,
-    padding: isSmallScreen ? "0 8px" : 0,
+    padding: isSmallScreen ? 24 : 32,
   };
 
   const formStyles = {
@@ -48,8 +47,14 @@ export default function Login() {
   };
 
   return (
-    <AuthShell
-      left={
+    <div style={styles.pageContainer}>
+      {/* Background with RecipeCollage */}
+      <div style={styles.backgroundLayer}>
+        <RecipeCollage />
+      </div>
+
+      {/* Foreground content overlay */}
+      <div style={styles.contentOverlay}>
         <div style={containerStyles}>
           {/* Brand + Welcome */}
           <div style={styles.brandRow}>
@@ -103,15 +108,39 @@ export default function Login() {
             Don't have an account? <Link to="/register" style={styles.link}>Sign up</Link>
           </div>
         </div>
-      }
-      right={<RecipeCollage />}
-    />
+      </div>
+    </div>
   );
 }
 
 const styles = {
-  formContainer: {
+  pageContainer: {
+    position: "relative",
+    minHeight: "100vh",
     width: "100%",
+    overflow: "hidden",
+  },
+  backgroundLayer: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 0,
+  },
+  contentOverlay: {
+    position: "relative",
+    zIndex: 1,
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "var(--spacing-lg)",
+  },
+  formCard: {
+    width: "100%",
+    background: "rgba(27, 24, 19, 0.92)",
+    border: "1px solid var(--color-line)",
+    borderRadius: "var(--radius-lg)",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+    backdropFilter: "blur(12px)",
   },
   brandRow: {
     display: "flex",
