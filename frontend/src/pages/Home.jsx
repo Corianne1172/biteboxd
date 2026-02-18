@@ -170,10 +170,12 @@ function RecipeCard({ title, rating, time, calories, protein, tags, color }) {
 
 const styles = {
   pageContainer: {
-    width: "100%",
+    width: "100vw",
     minHeight: "100vh",
     background: "linear-gradient(180deg, #A94438 0%, #D24545 35%, #E6BAA3 70%, #E4DEBE 100%)",
     paddingBottom: 80,
+    margin: 0,
+    overflowX: "hidden",
   },
   
   // Hero Section
