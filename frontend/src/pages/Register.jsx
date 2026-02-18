@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import RecipeCollage from "../components/RecipeCollage";
 import PasswordRules from "../components/Auth/PasswordRules";
 import { FormField } from "../components/UI/FormField";
 import FocusInput from "../components/UI/FocusInput";
@@ -56,35 +55,29 @@ export default function Register() {
 
   const containerStyles = {
     ...styles.formCard,
-    maxWidth: isSmallScreen ? "100%" : 400,
-    padding: isSmallScreen ? 24 : 32,
+    maxWidth: isSmallScreen ? "100%" : 460,
+    padding: isSmallScreen ? 32 : 40,
   };
 
   const formStyles = {
     ...styles.form,
-    gap: isSmallScreen ? "var(--spacing-sm)" : "var(--spacing-md)",
+    gap: isSmallScreen ? 12 : 16,
   };
 
   return (
     <div style={styles.pageContainer}>
-      {/* Background with RecipeCollage */}
-      <div style={styles.backgroundLayer}>
-        <RecipeCollage />
-      </div>
-
-      {/* Foreground content overlay */}
-      <div style={styles.contentOverlay}>
+      <div style={styles.contentWrapper}>
         <div style={containerStyles}>
-          {/* Brand + Welcome */}
+          {/* Brand + Logo */}
           <div style={styles.brandRow}>
-            <div style={styles.logoDot} />
+            <div style={styles.logo} />
             <div>
               <div style={styles.brand}>BiteBoxd</div>
               <div style={styles.tagline}>Rate recipes like movies. Track macros like a pro.</div>
             </div>
           </div>
 
-          <div style={{ marginTop: 18 }}>
+          <div style={{ marginTop: 24 }}>
             <div style={styles.welcome}>Welcome 👋</div>
             <div style={styles.pitch}>
               Build your cookbook, share your hits, and see what's trending in the feed.
@@ -103,6 +96,7 @@ export default function Register() {
                 placeholder="corianne1172"
                 autoComplete="username"
                 required
+                style={styles.input}
               />
             </FormField>
 
@@ -114,6 +108,7 @@ export default function Register() {
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
+                style={styles.input}
               />
             </FormField>
 
@@ -125,6 +120,7 @@ export default function Register() {
                 type="password"
                 autoComplete="new-password"
                 required
+                style={styles.input}
               />
             </FormField>
 
@@ -134,7 +130,11 @@ export default function Register() {
               type="submit"
               variant="primary"
               disabled={!passwordOk}
-              style={{ opacity: passwordOk ? 1 : 0.55 }}
+              style={{ 
+                ...styles.submitButton,
+                opacity: passwordOk ? 1 : 0.5,
+                cursor: passwordOk ? "pointer" : "not-allowed",
+              }}
             >
               Create account
             </FocusButton>
@@ -151,95 +151,106 @@ export default function Register() {
 
 const styles = {
   pageContainer: {
-    position: "relative",
+    width: "100vw",
     minHeight: "100vh",
-    width: "100%",
-    overflow: "hidden",
+    background: "linear-gradient(180deg, #E4DEBE 0%, #E6BAA3 40%, #D24545 80%, #A94438 100%)",
+    margin: 0,
+    overflowX: "hidden",
   },
-  backgroundLayer: {
-    position: "fixed",
-    inset: 0,
-    zIndex: 0,
-  },
-  contentOverlay: {
-    position: "relative",
-    zIndex: 1,
+  contentWrapper: {
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "var(--spacing-lg)",
+    padding: 24,
   },
   formCard: {
     width: "100%",
-    background: "rgba(27, 24, 19, 0.92)",
-    border: "1px solid var(--color-line)",
-    borderRadius: "var(--radius-lg)",
-    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-    backdropFilter: "blur(12px)",
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: 20,
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.25)",
+    border: "1px solid rgba(230, 186, 163, 0.3)",
   },
   brandRow: {
     display: "flex",
-    gap: "var(--spacing-md)",
+    gap: 16,
     alignItems: "center",
   },
-  logoDot: {
-    width: 14,
-    height: 14,
-    borderRadius: 6,
-    background: "linear-gradient(135deg, var(--color-olive), var(--color-orange))",
-    boxShadow: "0 0 0 3px var(--color-line)",
+  logo: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
     flexShrink: 0,
   },
   brand: { 
-    fontSize: 18, 
-    fontWeight: 800, 
-    letterSpacing: 0.2,
-    color: "var(--color-cream)",
+    fontSize: 22, 
+    fontWeight: 900, 
+    letterSpacing: -0.5,
+    color: "#A94438",
   },
   tagline: { 
     fontSize: 13, 
-    color: "var(--color-muted)", 
+    color: "#A94438", 
+    opacity: 0.7,
     marginTop: 2,
   },
   welcome: { 
-    fontSize: 22, 
-    fontWeight: 800, 
-    marginBottom: "var(--spacing-xs)",
-    color: "var(--color-cream)",
+    fontSize: 26, 
+    fontWeight: 900, 
+    marginBottom: 8,
+    color: "#A94438",
   },
   pitch: { 
-    color: "var(--color-muted)", 
-    fontSize: 14, 
-    lineHeight: 1.4,
+    color: "#A94438", 
+    opacity: 0.8,
+    fontSize: 15, 
+    lineHeight: 1.5,
   },
   error: {
-    marginTop: 14,
-    padding: "var(--spacing-sm) var(--spacing-md)",
-    borderRadius: "var(--radius-md)",
-    background: "var(--color-error-bg)",
-    border: "1px solid var(--color-error-border)",
-    color: "var(--color-error-text)",
+    marginTop: 20,
+    padding: "12px 16px",
+    borderRadius: 10,
+    background: "rgba(210, 69, 69, 0.1)",
+    border: "1px solid rgba(210, 69, 69, 0.3)",
+    color: "#D24545",
     fontSize: 14,
   },
   form: { 
     display: "grid", 
-    marginTop: 16,
+    marginTop: 24,
   },
   label: { 
     display: "grid", 
-    gap: "var(--spacing-xs)", 
-    fontSize: 13, 
-    color: "var(--color-muted)",
+    gap: 6, 
+    fontSize: 14, 
+    fontWeight: 600,
+    color: "#A94438",
+  },
+  input: {
+    background: "#F5F5F5",
+    border: "1px solid #E0E0E0",
+    color: "#333333",
+    fontSize: 15,
+  },
+  submitButton: {
+    fontSize: 16,
+    fontWeight: 700,
+    padding: "14px 24px",
+    background: "linear-gradient(135deg, #D24545 0%, #A94438 100%)",
+    color: "white",
+    marginTop: 8,
   },
   footer: { 
-    marginTop: 14, 
+    marginTop: 20, 
     fontSize: 14, 
-    color: "var(--color-muted)",
+    color: "#A94438",
+    opacity: 0.8,
+    textAlign: "center",
   },
   link: { 
-    color: "var(--color-cream)", 
-    fontWeight: 800, 
-    textDecoration: "none",
+    color: "#D24545", 
+    fontWeight: 700, 
+    textDecoration: "underline",
   },
 };
