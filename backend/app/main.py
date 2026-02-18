@@ -1,19 +1,18 @@
-from fastapi import FastAPI
-from app.db.database import engine
+from fastapi import FastAPI, Depends
+from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from app.db.database import engine, get_db
 from app.db.base import Base
 from app.models import models  # noqa
 from app.routes.auth import router as auth_router
 from app.routes.recipes import router as recipes_router
 from app.routes.feed import router as feed_router
-from sqlalchemy import text
-from fastapi import Depends
-from sqlalchemy.orm import Session
-from app.db.database import get_db
-from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from fastapi.staticfiles import StaticFiles
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.core.errors import (
