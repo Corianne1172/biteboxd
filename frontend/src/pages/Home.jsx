@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthShell from "../components/AuthShell";
 import RecipeCollage from "../components/RecipeCollage";
 import FocusButton from "../components/UI/FocusButton";
 
@@ -14,22 +13,26 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const containerStyles = {
-    ...styles.heroContainer,
-    maxWidth: isSmallScreen ? "100%" : 440,
-    gap: isSmallScreen ? 24 : 32,
-    padding: isSmallScreen ? "0 8px" : 0,
-  };
-
   const titleStyles = {
     ...styles.title,
     fontSize: isSmallScreen ? 32 : 42,
   };
 
   return (
-    <AuthShell
-      left={
-        <div style={containerStyles}>
+    <div style={styles.pageContainer}>
+      {/* Background with RecipeCollage */}
+      <div style={styles.backgroundLayer}>
+        <RecipeCollage />
+      </div>
+
+      {/* Foreground content overlay */}
+      <div style={styles.contentOverlay}>
+        <div style={{
+          ...styles.heroContainer,
+          maxWidth: isSmallScreen ? "100%" : 440,
+          gap: isSmallScreen ? 24 : 32,
+          padding: isSmallScreen ? "0 16px" : 0,
+        }}>
           {/* Brand + Logo */}
           <div style={styles.brandSection}>
             <div style={styles.logoLarge} />
@@ -72,17 +75,42 @@ export default function Home() {
             </button>
           </div>
         </div>
-      }
-      right={<RecipeCollage />}
-    />
+      </div>
+    </div>
   );
 }
 
 const styles = {
+  pageContainer: {
+    position: "relative",
+    minHeight: "100vh",
+    width: "100%",
+    overflow: "hidden",
+  },
+  backgroundLayer: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 0,
+  },
+  contentOverlay: {
+    position: "relative",
+    zIndex: 1,
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "var(--spacing-lg)",
+  },
   heroContainer: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    background: "rgba(27, 24, 19, 0.92)",
+    border: "1px solid var(--color-line)",
+    borderRadius: "var(--radius-lg)",
+    padding: 32,
+    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+    backdropFilter: "blur(12px)",
   },
   brandSection: {
     textAlign: "center",
