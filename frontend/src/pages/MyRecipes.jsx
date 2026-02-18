@@ -21,8 +21,8 @@ export default function MyRecipes() {
       setItems(recipes);
       
       // Redirect to create recipe if user has no recipes
-      if (recipes.length === 0) {
-        nav("/recipes/new");
+      if (!loading && recipes.length === 0) {
+        setTimeout(() => nav("/recipes/new"), 100);
       }
     } catch {
       setErr("Failed to load your recipes. Are you logged in?");
@@ -46,26 +46,28 @@ export default function MyRecipes() {
   }, []);
 
   return (
-    <PageContainer>
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-md)" }}>
-        <h2 style={{ margin: 0 }}>My Recipes</h2>
-        <Link to="/recipes/new" style={{ marginLeft: "auto" }}>
-          + New Recipe
-        </Link>
-      </div>
+    <div style={{ minHeight: "100vh", background: "#ffffff", color: "#333" }}>
+      <PageContainer>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-md)" }}>
+          <h2 style={{ margin: 0, color: "#A94438" }}>My Recipes</h2>
+          <Link to="/recipes/new" style={{ marginLeft: "auto" }}>
+            + New Recipe
+          </Link>
+        </div>
 
-      {loading && <LoadingMessage />}
-      <ErrorMessage>{err}</ErrorMessage>
+        {loading && <LoadingMessage />}
+        <ErrorMessage>{err}</ErrorMessage>
 
-      <div style={{ display: "grid", gap: "var(--spacing-md)", marginTop: "var(--spacing-md)" }}>
-        {items.map((r) => (
-          <RecipeCard key={r.id} recipe={r} showActions onDelete={onDelete} />
-        ))}
+        <div style={{ display: "grid", gap: "var(--spacing-md)", marginTop: "var(--spacing-md)" }}>
+          {items.map((r) => (
+            <RecipeCard key={r.id} recipe={r} showActions onDelete={onDelete} />
+          ))}
 
-        {!loading && items.length === 0 && (
-          <p>You have no recipes yet. Click "New Recipe" to add one.</p>
-        )}
-      </div>
-    </PageContainer>
+          {!loading && items.length === 0 && (
+            <p>You have no recipes yet. Click "New Recipe" to add one.</p>
+          )}
+        </div>
+      </PageContainer>
+    </div>
   );
 }
