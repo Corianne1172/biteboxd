@@ -5,6 +5,14 @@ Users can log recipes they cook, rate and review them, track nutritional macros,
 
 ---
 
+## Project Status
+
+This repository represents the **current, stable iteration** of BiteBoxd.
+
+Earlier experimental iterations were consolidated into this clean codebase to simplify commit history, remove deprecated code paths, and prepare the project for deployment and portfolio use. All functionality present here reflects the final intended design of the application.
+
+---
+
 ## Tech Stack
 
 ### Frontend
