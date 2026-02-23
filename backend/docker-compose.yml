@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: biteboxd_db
+    environment:
+      POSTGRES_USER: biteboxd
+      POSTGRES_PASSWORD: biteboxd
+      POSTGRES_DB: biteboxd
+    ports:
+      - "5433:5432"
+    volumes:
+      - biteboxd_pgdata:/var/lib/postgresql/data
+
+volumes:
+  biteboxd_pgdata:
