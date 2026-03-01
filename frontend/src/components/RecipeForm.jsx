@@ -71,7 +71,7 @@ export default function RecipeForm({ initial = empty, onSubmit, submitLabel = "S
       instructions: form.instructions?.trim() || null,
       cook_time: toNumberOrNull(form.cook_time),
       cuisine: form.cuisine?.trim() || null,
-      difficulty: form.difficulty?.trim() || null,
+      difficulty: toNumberOrNull(form.difficulty),
       is_public: !!form.is_public,
       calories: toNumberOrNull(form.calories),
       protein_g: toNumberOrNull(form.protein_g),

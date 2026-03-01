@@ -8,7 +8,7 @@ export default function NewRecipe() {
 
   const create = async (payload) => {
     const res = await api.post("/recipes", payload);
-    nav(`/recipes/${res.data.id}`);
+    nav("/recipes");
   };
 
   return (
