@@ -169,3 +169,17 @@ The application uses a warm, food-inspired color scheme:
 - `#D24545` - Red (accent)
 - `#E6BAA3` - Peach (light accent)
 - `#E4DEBE` - Beige (background)
+
+---
+
+
+## 🎥 Demo
+
+Short walkthrough of BiteBoxd showing:
+- Account creation & authentication
+- Creating a recipe
+- Difficulty rating & nutrition tracking
+- Public feed vs My Recipes
+- Mobile responsiveness
+
+👉 [Watch the demo video](https://github.com/user-attachments/assets/345cae33-9e86-409a-b851-7a017e1c3a80)
